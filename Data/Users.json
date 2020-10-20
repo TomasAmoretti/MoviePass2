@@ -1,0 +1,18 @@
+[
+    {
+        "nombre": "admin",
+        "apellido": "admin",
+        "dni": 123,
+        "email": "admin@moviepass.com",
+        "password": "admin",
+        "rol": "admin"
+    },
+    {
+        "nombre": null,
+        "apellido": null,
+        "dni": null,
+        "email": null,
+        "password": null,
+        "rol": null
+    }
+]
