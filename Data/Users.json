@@ -2,17 +2,17 @@
     {
         "nombre": "admin",
         "apellido": "admin",
-        "dni": 123,
+        "dni": "123",
         "email": "admin@moviepass.com",
         "password": "admin",
         "rol": "admin"
     },
     {
-        "nombre": null,
-        "apellido": null,
-        "dni": null,
-        "email": null,
-        "password": null,
-        "rol": null
+        "nombre": "Test2",
+        "apellido": "utn",
+        "dni": "323232",
+        "email": "test2@hotmail.com",
+        "password": "admin",
+        "rol": "client"
     }
 ]

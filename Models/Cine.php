@@ -9,8 +9,6 @@ class Cine{
     private $nombre; //string
     private $valor_entrada; //int
 
-
-
     public function getCapacidad(){
         return $this->capacidad;
     }

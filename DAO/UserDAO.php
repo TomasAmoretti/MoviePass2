@@ -10,13 +10,22 @@
         private $fileName = ROOT."Data/Users.json";
 
 
-        public function Add(User $user)
+        public function Add(User $userAgregar)
         {
             $this->RetrieveData();
-            
-            array_push($this->usersList, $user);
 
-            $this->SaveData();
+            /*foreach($this->usersList as $user2){
+                if($user2->getEmail() == $userAgregar->getEmail()){
+                    $booleano = false;
+                }
+            }
+            if($booleano){*/
+                array_push($this->usersList, $userAgregar);
+                $this->SaveData();
+            /*}else{
+                echo "<script> alert('Datos de ingreso de usuario incorrectos!!'); </script>";
+            }*/
+
         }
 
         public function GetAll()
@@ -72,7 +81,6 @@
                  foreach($contentArray as $content)
                  {
                     $user = new User();
-                    // $user = new User($content["nombre"], $content["apellido"], $content["dni"], $content["email"], $content["password"], $content["rol"]);
                     $user->setNombre($content["nombre"]);
                     $user->setApellido($content["apellido"]);
                     $user->setDNI($content["dni"]);

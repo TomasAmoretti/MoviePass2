@@ -14,29 +14,25 @@
         }
 
         public function ClientView(){
-
             require_once(VIEWS_PATH."validate-session.php");
-            require_once(VIEWS_PATH."cartelera-cliente.php");
+            require_once(VIEWS_PATH."billboard.php");
         }
 
         public function SignInUp($nombre, $apellido, $dni, $email, $password)
         {
             $user = new User($nombre, $apellido, $dni, $email, $password, 'cliente');
-            /*
             $user->setNombre($nombre);
             $user->setApellido($apellido);
             $user->setDNI($dni);
             $user->setEmail($email);
             $user->setPassword($password);
             $user->setRol('client');
-*/
     
             $this->userDAO->Add($user);
 
             $this->ClientView();
         }
 
-        /*
         public function Remove($id)
         {
             require_once(VIEWS_PATH."validate-session.php");
@@ -45,7 +41,5 @@
 
             $this->ShowListView();
         }
-
-        */
     }
 ?>

@@ -7,13 +7,6 @@ abstract class PerfilUser{
     private $apellido; //string
     private $dni;      //int
 
-    /*
-    public function __construct($nombre, $apellido, $dni){
-        $this->nombre = $nombre;
-        $this->apellido = $apellido;
-        $this->dni = $dni;
-    }
-*/
     public function getNombre(){
         return $this->nombre;
     }

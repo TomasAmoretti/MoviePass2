@@ -21,3 +21,20 @@ object {
     display: flex;
     justify-content: space-between;
 }
+
+div#mainav li, div#mainav2 li{
+    display: inline-flex;
+    margin-bottom: 5px;
+}
+
+div#mainav li a {
+    background: grey;
+    color: white;
+    border-radius: 5px;
+    padding: 6px;
+}
+
+div#mainav {
+    margin-top: 30px;
+    margin-bottom: 25px;
+}

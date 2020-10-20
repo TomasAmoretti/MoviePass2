@@ -3,42 +3,55 @@ namespace Models;
 
 class Pelicula{
 
-    private $duracion; //int
+    private $rating; //float
     private $imagen;    //byte
     private $lenguaje;  //string
     private $titulo;    //int
+    private $genero;    //string
+    private $genreId;
 
-    public function __construct($duracion, $imagen, $lenguaje, $titulo){
-        $this->duracion = $duracion;
-        $this->imagen = $imagen;
-        $this->lenguaje = $lenguaje;
+    public function __construct($titulo, $imagen, $genero, $rating, $lenguaje, $genreId){
         $this->titulo = $titulo;
+        $this->imagen = $imagen;
+        $this->genero = $genero;
+        $this->rating = $rating;
+        $this->lenguaje = $lenguaje;
+        $this->genreId = $genreId;        
     }
 
-    public function getDuracion(){
-        return $this->duracion = $duracion;
+    public function getTitulo(){
+        return $this->titulo;
     }
     public function getImagen(){
-        return $this->imagen = $imagen;
+        return $this->imagen;
+    }
+    public function getGenero(){
+        return $this->genero;
+    }
+    public function getRating(){
+        return $this->rating;
     }
     public function getLenguaje(){
-        return $this->lenguaje = $lenguaje;
+        return $this->lenguaje;
     }
-    public function getTitulo(){
-        return $this->titulo = $titulo;
+    public function getGenreIds(){
+        return $this->genreId;
     }
 
-    public function setDuracion($duracion){
-        $this->duracion = $duracion;
+    public function setTitulo(){
+        $this->titulo = $titulo;
     }
     public function setImagen(){
         $this->imagen = $imagen;
     }
+    public function setGenero(){
+        $this->genero = $genero;
+    }
+    public function setRating($rating){
+        $this->rating = $rating;
+    }
     public function setLenguaje(){
         $this->lenguaje = $lenguaje;
-    }
-    public function setTitulo(){
-        $this->titulo = $titulo;
     }
 }
 

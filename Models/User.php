@@ -9,14 +9,6 @@ class User extends PerfilUser{
     private $password;   //string
     private $rol;    
 
-    /*
-    public function __construct($nombre, $apellido, $dni, $email, $password, $rol){
-        parent::__construct($nombre, $apellido,$dni);
-        $this->email = $email;
-        $this->password = $password;
-        $this->rol = $rol;
-    }*/
-
     public function getEmail(){
         return $this->email;
     }

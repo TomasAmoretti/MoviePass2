@@ -12,11 +12,28 @@
 
         public function Add(Cine $cine)
         {
+            $booleano = true;
             $this->RetrieveData();
-            
-            array_push($this->cinesList, $cine);
-
-            $this->SaveData();
+            foreach($this->cinesList as $cine2){
+                if($cine->GetNombre() == $cine2->GetNombre()){
+                    $booleano = false;
+                }
+                if($cine->GetCapacidad() <= 0){
+                    $booleano = false;
+                }
+                if($cine->GetDireccion() == ""){
+                    $booleano = false;
+                }
+                if($cine->GetValorEntrada() <= 0){
+                    $booleano = false;
+                }
+            }
+            if($booleano){
+                array_push($this->cinesList, $cine);
+                $this->SaveData();
+            }else{
+                echo "<script> alert('Datos de ingreso de cine incorrectos!!'); </script>";
+            }
         }
 
         public function GetAll()
@@ -53,7 +70,7 @@
             file_put_contents($this->fileName, $fileContent);
         }
 
-        private function RetrieveData()
+        public function RetrieveData()
         {
              $this->userList = array();
 
