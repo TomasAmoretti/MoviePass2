@@ -1,97 +1,76 @@
-<?php include_once('header.php'); ?>
+<?php include_once('header.php'); 
 
-<main class="login">
+if(!empty($message)){
+  echo "<script> if(confirm('".$message."'));";
+  echo"</script>";
+}
 
-    <!--
-        LOGIN
-    -->
-    <form class="login-form" action="<?php echo FRONT_ROOT."Home/Login"?>" method="POST">
- 
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-control" name="email" />
-        </div>
-        
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password">
-        </div>
-
-        <div class="actions">
-
-            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#sign-up">
-                Registrar usuario
-            </button>
-            
-            <button type="submit" class="btn btn-dark">
-                Login
-            </button>
-        
-        </div>
+?>
 
 
-        <!-- Esto como si no existiera -->
-        <?php if(isset($successMje) || isset($errorMje)) { ?>
-            <div class="alert <?php if(isset($successMje)) echo 'alert-success'; else echo 'alert-danger'; ?> alert-dismissible fade show mt-3" role="alert">
-                <strong><?php if(isset($successMje)) echo $successMje; else echo $errorMje; ?></strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <?php } ?>
-    </form>
+<div class="container">
 
-     <!--
-        SIGN UP
-    -->
-    <div class="modal fade" id="sign-up" tabindex="-1" role="dialog" aria-labelledby="sign-up" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
 
-            <form class="modal-content" action="<?php echo FRONT_ROOT."User/SignInUp"?>" method="POST">
+      <div class="col-xl-10 col-lg-12 col-md-9">
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Registrar usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
+        <div class="card o-hidden border-0 shadow-lg my-5 rounded-0">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6 movie-black">
+                <div class="p-5">
+                  <div class="text-center">
+                    <h1 class="h4 text-movie-red mb-4">Welcome Back!</h1>
+                  </div>
+
+                  <form class="user"  action="<?php echo FRONT_ROOT."User/Login"?>" method="POST">
+
+                    <div class="form-group">
+                      <input type="email" name="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                      <!--<div class="custom-control custom-checkbox small">
+                        <input type="checkbox" class="custom-control-input" id="customCheck">
+                        <label class="custom-control-label" for="customCheck">Remember Me</label>
+                      </div>-->
+                    </div>
+
+                    <button class="btn btn-user btn-block btn-movie-static" type="submit" name="btn-login">
+                      Login
                     </button>
+
+                  </form>
+                  <hr>
+                  
+                  <?php
+                    require_once "FacebookConfig.php";
+                    $url = $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+                    echo "<br><a class="."loginfb btn btn-primary "." href=" . htmlspecialchars($loginUrl) . "> <i class="."fab fa-facebook-f fa-fw"."></i>  LOGIN FACEBOOOK  </a>";
+                  ?>
+   
+                
+                  <hr>
+                  <!--
+                  <div class="text-center">
+                    <a class="small" href="<?php echo FRONT_ROOT."Home/ForgotPassword"?>">Forgot Password?</a>
+                  </div>-->
+                  <div class="text-center">
+                    <a class="small" href="<?php echo FRONT_ROOT."User/Add"?>">Create an Account!</a>
+                  </div>
                 </div>
-
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <label>Nombre</label>
-                        <input type="text" class="form-control" name="nombre" required/>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Apellido</label>
-                        <input type="text" class="form-control" name="apellido" required/>
-                    </div>
-
-                    <div class="form-group">
-                        <label>DNI</label>
-                        <input type="text" class="form-control" name="dni" required/>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" class="form-control" name="email" required/>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" name="password" required/>
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-dark">Registrar</button>
-                </div>
-            </form>
-
+              </div>
+            </div>
+          </div>
         </div>
+
+      </div>
+
     </div>
 
-</main>
+  </div>

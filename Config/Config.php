@@ -1,15 +1,25 @@
 <?php namespace Config;
 
-define("ROOT", dirname(__DIR__) . "/");
+define("ROOT", str_replace("\\", "/", dirname(__DIR__)) . "/");
+
 //Path to your project's root folder
-define("API_KEY","556dec87b998e644090480eb0f0ff783");
-define("API_MAIN_LINK","https://api.themoviedb.org/3/");
-define("FRONT_ROOT", "/TpFinal/MoviePass/");
+define("FRONT_ROOT", "/MoviePass2/");
 define("VIEWS_PATH", "Views/");
+
 define("CSS_PATH", FRONT_ROOT.VIEWS_PATH . "css/");
 define("JS_PATH", FRONT_ROOT.VIEWS_PATH . "js/");
+define("IMG_PATH", FRONT_ROOT.VIEWS_PATH ."img/");
+
 define("ICONS_PATH", FRONT_ROOT.VIEWS_PATH ."icons/");
-define("IMG_PATH", FRONT_ROOT.VIEWS_PATH ."img/")
+
+define("SCSS_PATH", FRONT_ROOT.VIEWS_PATH ."scss/");
+define("VENDOR_PATH", FRONT_ROOT.VIEWS_PATH ."vendor/");
+
+
+define("DB_HOST", "localhost");
+define("DB_NAME", "movie_pass");
+define("DB_USER", "root");
+define("DB_PASS", "");
 
 ?>
 
