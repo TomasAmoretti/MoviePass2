@@ -1,16 +1,27 @@
 <?php
+
 namespace Models;
 
-class Rol {
+class Rol{
 
-    private $descripcion; //string
+    private $id;
+    private $description;
+    
 
-    public function getDescripcion(){
+    //Getters
+    public function getId(){
+        return $this->id;
+    }
+    public function getDescription(){
         return $this->description;
     }
 
-    public function setDescripcion($desripcion){
-        $this->descripcion = $descripcion;
+    //Setters
+    public function setId($id){
+        $this->id = $id;
+    }
+    public function setDescription($description){
+        $this->description = $description;
     }
 
 }
