@@ -1,33 +1,52 @@
 <?php
+
 namespace Models;
 
-abstract class PerfilUser{
+use Models\User as User;
 
-    private $nombre;   //string
-    private $apellido; //string
-    private $dni;      //int
+class PerfilUser {
 
-    public function getNombre(){
-        return $this->nombre;
+    private $id;
+    private $firstName;
+    private $lastName;
+    private $dni;  
+
+    private $user;
+
+
+    //Getters
+    public function getId(){
+        return $this->id;
     }
-    public function getApellido(){
-        return $this->apellido;
+    public function getFirstName(){
+        return $this->firstName;
     }
-    public function getDNI(){
+    public function getLastName(){
+        return $this->lastName;
+    }
+    public function getDni(){
         return $this->dni;
     }
+    public function getUser(){
+        return $this->user;
+    }
 
-    public function setNombre($nombre){
-        $this->nombre = $nombre;
+    //Setters
+    public function setId($id){
+        $this->id = $id;
     }
-    public function setApellido($apellido){
-        $this->apellido = $apellido;
+    public function setFirstName($firstName){
+        $this->firstName = $firstName;
     }
-    public function setDNI($dni){
+    public function setLastName($lastName){
+        $this->lastName = $lastName;
+    }
+    public function setDni($dni){
         $this->dni = $dni;
+    }
+    public function setUser($user){
+        $this->user = $user;
     }
 
 }
-
-    
 ?>

@@ -1,97 +1,132 @@
 <?php
     namespace DAO;
 
-    use DAO\IUserDAO as IUserDAO;
+    use DAO\Connection as Connection;
+    use DAO\QueryType as QueryType;
+    use Models\PerfilUser as PerfilUser;
     use Models\User as User;
+    use Models\Rol as Rol;
 
-    class UserDAO implements IUserDAO
+    class UserDAO
     {
-        private $usersList = array();
-        private $fileName = ROOT."Data/Users.json";
 
+        private $connection;
+        private $tableName = "Users"; 
 
-        public function Add(User $userAgregar)
-        {
-            $this->RetrieveData();
+        public function Add(PerfilUser $user){
 
-            /*foreach($this->usersList as $user2){
-                if($user2->getEmail() == $userAgregar->getEmail()){
-                    $booleano = false;
-                }
+            try
+            {
+                $query = "CALL Users_Add (?, ?, ?, ?, ?, ?)";
+
+                $parameters["firstName"] =  $user->getFirstName();
+                $parameters["lastName"] = $user->getLastName();
+                $parameters["dni"] = $user->getDni();
+                $parameters["email"] = $user->getUser()->getEmail();   
+                $parameters["password"] = $user->getUser()->getPassword();
+                $parameters["rol"] = $user->getUser()->getRol()->getDescription();
+                  
+                $this->connection = Connection::GetInstance();
+    
+                $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+            }   
+            catch(Exception $ex)
+            {
+                throw $ex;
             }
-            if($booleano){*/
-                array_push($this->usersList, $userAgregar);
-                $this->SaveData();
-            /*}else{
-                echo "<script> alert('Datos de ingreso de usuario incorrectos!!'); </script>";
-            }*/
 
-        }
-
-        public function GetAll()
-        {
-            $this->RetrieveData();
-
-            return $this->usersList;
         }
 
         
-        public function getByEmail($email){
-            $this->RetrieveData();
+        public function GetByEmail($email){
 
-            foreach ($this->usersList as $key => $user) {
-                if($user->getEmail() == $email) {
-                    return $user;
-                }
-            }
-        }
-
-        private function SaveData()
-        {
-            $arrayToEncode = array();
-
-            foreach($this->usersList as $user)
+            try
             {
-                $valuesArray = array();
-                $valuesArray["nombre"] = $user->getNombre();
-                $valuesArray["apellido"] = $user->getApellido();
-                $valuesArray["dni"] = $user->getDNI();
-                $valuesArray["email"] = $user->getEmail();
-                $valuesArray["password"] = $user->getPassword();
-                $valuesArray["rol"] = $user->getRol();
+                $rol = null;
+                $user = null;
+                $perfilUser = null;
 
-                array_push($arrayToEncode, $valuesArray);
+                $query = "CALL Users_GetByEmail(?)";
+
+                $parameters["email"] = $email;
+
+                $this->connection = Connection::GetInstance();
+
+                $results = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);
+
+                foreach($results as $row)
+                {
+                    $perfilUser = new PerfilUser();
+                    $user = new User();
+                    $rol = new Rol();
+
+                    $rol->setDescription($row["role"]);
+                    
+                    $user->setEmail($row["email"]);
+                    $user->setPassword($row["password"]);
+                    $user->setRol($rol);
+
+                    $perfilUser->setId($row["id_user"]);
+                    $perfilUser->setFirstName($row["firstName"]);
+                    $perfilUser->setLastName($row["lastName"]);
+                    $perfilUser->setDni($row["dni"]);
+                    $perfilUser->setUser($user);
+                }
+                return $perfilUser;
             }
-
-            $fileContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
-
-            file_put_contents($this->fileName, $fileContent);
+            catch(Exception $ex)
+            {
+                throw $ex;
+            }
         }
 
-        private function RetrieveData()
-        {
-             $this->usersList = array();
+        public function GetAll($email){
 
-             if(file_exists($this->fileName))
-             {
-                 $jsonToDecode = file_get_contents($this->fileName);
+            try
+            {
+                $rol = null;
+                $user = null;
+                $perfilUser = null;
+                $userList = array();
 
-                 $contentArray = ($jsonToDecode) ? json_decode($jsonToDecode, true) : array();
-                 
-                 foreach($contentArray as $content)
-                 {
+
+                $query = "CALL Users_GetAll()";
+
+                $parameters["email"] = $email;
+
+                $this->connection = Connection::GetInstance();
+
+                $results = $this->connection->Execute($query, array(), QueryType::StoredProcedure);
+
+                foreach($results as $row)
+                {
+                    $perfilUser = new PerfilUser();
                     $user = new User();
-                    $user->setNombre($content["nombre"]);
-                    $user->setApellido($content["apellido"]);
-                    $user->setDNI($content["dni"]);
-                
-                    $user->setEmail($content["email"]);
-                    $user->setPassword($content["password"]);
-                    $user->setRol($content["rol"]);
+                    $rol = new Rol();
 
-                    array_push($this->usersList, $user);
-                 }
-             }
-        }  
+                    $rol->setDescription($row["role"]);
+                    
+                    $user->setEmail($row["email"]);
+                    $user->setPassword($row["password"]);
+                    $user->setRol($rol);
+
+                    $perfilUser->setId($row["id_user"]);
+                    $perfilUser->setFirstName($row["firstName"]);
+                    $perfilUser->setLastName($row["lastName"]);
+                    $perfilUser->setDni($row["dni"]);
+                    $perfilUser->setUser($user);
+
+                    array_push($userList, $perfilUser);
+                }
+                return $userList;
+            }
+            catch(Exception $ex)
+            {
+                throw $ex;
+            }
+        }
+
+       
+
     }
 ?>
