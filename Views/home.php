@@ -1,5 +1,6 @@
 <?php include_once('header.php'); 
 
+
 if(!empty($message)){
   echo "<script> if(confirm('".$message."'));";
   echo"</script>";
@@ -54,11 +55,10 @@ if(!empty($message)){
                     echo "<br><a class="."loginfb btn btn-primary "." href=" . htmlspecialchars($loginUrl) . "> <i class="."fab fa-facebook-f fa-fw"."></i>  LOGIN FACEBOOOK  </a>";
                   ?>
    
-                
                   <hr>
                   <!--
                   <div class="text-center">
-                    <a class="small" href="<?php echo FRONT_ROOT."Home/ForgotPassword"?>">Forgot Password?</a>
+                    <a class="small" href="<?php //echo FRONT_ROOT."Home/ForgotPassword"?>">Forgot Password?</a>
                   </div>-->
                   <div class="text-center">
                     <a class="small" href="<?php echo FRONT_ROOT."User/Add"?>">Create an Account!</a>

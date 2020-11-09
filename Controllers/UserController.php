@@ -143,7 +143,6 @@
             throw $ex;
         }
     }
-/*
         public function loginWithFacebook2($fbUserData) {
 
             if($this->verifyIfTheUserEmailBeUsing($this->userDAO->GetAll(),$fbUserData["email"]))
@@ -238,7 +237,7 @@
                 $this->homeController->signup($message, 0);
             }            
         }
-*/
+
         
     }
 ?>

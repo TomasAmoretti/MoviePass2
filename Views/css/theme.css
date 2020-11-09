@@ -40,6 +40,8 @@ Theme colors: #FF8A00
 /*------------------------------------------------------------------
     [1. Body]
 */
+@import url("https://use.fontawesome.com/releases/v5.1.0/css/all.css");
+
 body {
   font-family: 'Open Sans';
   color: #666;

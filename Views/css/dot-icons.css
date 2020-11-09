@@ -1,9 +1,11 @@
-/*! Memico - Cinema Bootstrap HTML5 Template v.0.1.0 - 2019-03-14 */
 /*******************************************************************
 
 Dot-like css icons
 
 *******************************************************************/
+
+@import url("https://use.fontawesome.com/releases/v5.1.0/css/all.css");
+
 .th-dots {
   position: relative;
   display: inline-block;

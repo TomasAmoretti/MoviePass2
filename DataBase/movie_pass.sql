@@ -374,7 +374,6 @@ DELIMITER ;
 INSERT INTO Users (firstName, lastName, dni, email, password, role)
 VALUES  ('Admin','Admin ','123','admin@moviepass.com','admin','admin'),
         ('Tomy','Amoretti','38698787','tom.ia@moviepass.com','1234','client');
-
         
         
 INSERT INTO Cinemas (cinema_name, adress, state)

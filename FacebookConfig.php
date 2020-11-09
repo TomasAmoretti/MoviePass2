@@ -5,8 +5,8 @@ if(!session_id())
 require_once "Facebook/autoload.php";
 
 
-$app_id= "582974342470057";
-$app_secret="b954d993169651c447407183a8169b22";
+$app_id= "2845528639104872";
+$app_secret="cfd5f216e64c5a660b771108e686d542";
 $permissions = ['email']; // Optional permissions
 $callbackUrl="http://localhost/MoviePass2/callback.php";
 

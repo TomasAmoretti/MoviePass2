@@ -40,9 +40,10 @@
 
     <!-- Page level plugins -->
     <script src="<?php echo VENDOR_PATH ;?>/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?php echo VENDOR_PATH ;?>/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="<?php echo VENDOR_PATH ;?>datatables/dataTables.bootstrap4.min.js"></script>
 
-    <script src="<?php echo VENDOR_PATH ;?>parallax.js/parallax.min.js"></script>
+    <script src="<?php echo VENDOR_PATH ;?>parallax/parallax.min.js"></script>
+    <script src="<?php echo VENDOR_PATH ;?>parallax/parallax.js"></script>
     <!-- Waypoints -->
     <script src="<?php echo VENDOR_PATH ;?>/waypoints/jquery.waypoints.min.js"></script>
     <!-- Slick carousel -->
@@ -54,8 +55,8 @@
 
     
     <!-- Page level custom scripts -->
-    <script src="<?php echo JS_PATH ;?>/demo/datatables-demo.js"></script>
-    <script src="<?php echo JS_PATH ;?>demo/chart-area-demo.js"></script>
+    <script src="<?php echo JS_PATH ;?>demo/datatables-demo.js"></script>
+
     
     <script type="text/javascript">
       if(window.init){
