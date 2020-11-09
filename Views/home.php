@@ -61,7 +61,7 @@ if(!empty($message)){
                     <a class="small" href="<?php //echo FRONT_ROOT."Home/ForgotPassword"?>">Forgot Password?</a>
                   </div>-->
                   <div class="text-center">
-                    <a class="small" href="<?php echo FRONT_ROOT."User/Add"?>">Create an Account!</a>
+                    <a class="small" href="<?php echo FRONT_ROOT."Home/Register"?>">Create an Account!</a>
                   </div>
                 </div>
               </div>
