@@ -289,9 +289,10 @@ a {
   -ms-transition: all 0.1s linear 0s;
   transition: all 0.1s linear 0s;
 }
-a:hover {
+a.loginfb:hover {
   text-decoration: none;
-  color: #ff680d;
+  color: blue;
+  background: white;
 }
 .content-link {
   color: inherit;
@@ -1129,6 +1130,11 @@ textarea.form-control {
 /* Button */
 button.btn.btn-user.btn-block.btn-movie-static {
   background: red;
+}
+
+button.btn.btn-user.btn-block.btn-movie-static:hover{
+  color: red!important;
+  background: white;
 }
 
 .loginfb {

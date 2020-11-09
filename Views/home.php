@@ -52,7 +52,7 @@ if(!empty($message)){
                   <?php
                     require_once "FacebookConfig.php";
                     $url = $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
-                    echo "<br><a class="."loginfb btn btn-primary "." href=" . htmlspecialchars($loginUrl) . "> <i class="."fab fa-facebook-f fa-fw"."></i>  LOGIN FACEBOOOK  </a>";
+                    echo "<br><a class="."loginfb btn btn-primary "." href=" . htmlspecialchars($loginUrl) . "> <i class='fab fa-facebook-f fa-fw'></i>  LOGIN FACEBOOOK  </a>";
                   ?>
    
                   <hr>
