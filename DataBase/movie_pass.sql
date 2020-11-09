@@ -372,8 +372,10 @@ DELIMITER ;
 
 /* --- Insert Into --- */
 INSERT INTO Users (firstName, lastName, dni, email, password, role)
-VALUES  ('Admin','Admin ','123','admin@moviepass.com','admin','admin'),
-        ('Tomy','Amoretti','38698787','tom.ia@moviepass.com','1234','client');
+VALUES  ('Tomy','Amoretti','38698788','tomy_kpo95@hotmail.com','1234','client'),
+		('Admin','Admin ','123','admin@moviepass.com','admin','admin'),
+        ('Gianni','Ricciardi','40635847','gianni@moviepass.com','1234','client'),
+        ('Dante','Grassi','40138417','dante@moviepass.com','1234','client');
         
         
 INSERT INTO Cinemas (cinema_name, adress, state)
