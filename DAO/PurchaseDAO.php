@@ -5,6 +5,7 @@ use DAO\Connection as Connection;
 use DAO\QueryType as QueryType;
 use Models\Purchase as Purchase;
 use Models\Show as Show;
+use \Exception as Exception;
 
 
 
@@ -13,11 +14,12 @@ class PurchaseDAO {
     private $connection;
     private $tableName = "Purchases";
     
+    //Agrega una compra a la Base de Datos
     public function Add(Purchase $purchase){
 
         try
         {
-            $query = "CALL Purchases_Add (?, ?, ?, ?, ?)";
+            $query = "CALL Purchases_Add (?, ?, ?, ?, ?)";//Se guarda la accion que se hara en la BDD
 
             $parameters["count_tickets"] =  $purchase->getCountTicket();
             $parameters["id_user"] = $purchase->getIdUser();
@@ -28,7 +30,7 @@ class PurchaseDAO {
 
             $this->connection = Connection::GetInstance();
 
-            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion en la BDD
         }   
         catch(Exception $ex)
         {
@@ -37,18 +39,18 @@ class PurchaseDAO {
 
     }
     
-    
+    //Devuelve todas las compras que se realizaron
     public function GetAll()
     {
         try
         {
             $purchaseList = array();
 
-            $query = "CALL Purchases_GetAll()";
+            $query = "CALL Purchases_GetAll()";//Se guarda la accion que se hara en la BDD
 
             $this->connection = Connection::GetInstance();
 
-            $result = $this->connection->Execute($query, array(), QueryType::StoredProcedure);
+            $result = $this->connection->Execute($query, array(), QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
             //var_dump($result);
 
@@ -62,7 +64,7 @@ class PurchaseDAO {
     }
 
 
-
+    //Obtiene las compras a traves de la "id" del usuario
     public function GetByIdUser($code){
 
         try
@@ -71,13 +73,13 @@ class PurchaseDAO {
             $payment = null;
             $credit_account = null;
 
-            $query = "CALL Purchases_GetByCode(?)";
+            $query = "CALL Purchases_GetByCode(?)";//Se guarda la accion que se hara en la BDD
 
             $parameters["code"] = $code;
 
             $this->connection = Connection::GetInstance();
 
-            $results = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);
+            $results = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
             foreach($results as $row)
             {
