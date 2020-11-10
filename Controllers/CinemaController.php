@@ -10,14 +10,15 @@
     {
         private $cinemaDAO;
         private $homeController;
-
+        
+        //Método constructor.
         public function __construct()
         {
             $this->cinemaDAO = new CinemaDAO();
             $this->homeController = new HomeController();
         }
         
-
+        //Método para recibir todos los cines en un array.
         public function GetAll(){
 
             try{
@@ -35,7 +36,7 @@
             
         }
 
-
+        // Setea valores del cine a agregar, lo marca como "disponible" y lo agrega.
         public function Add($name, $adress)
         {
             try{
@@ -56,6 +57,7 @@
             }
         }
 
+        //
         public function Middleware($name, $adress, $id)
         {
             if(empty($id)){
@@ -66,7 +68,7 @@
 
         }
 
-        
+        //Remueve un cine a través de la ID.
         public function Remove($id)
         {
             try{
@@ -80,6 +82,7 @@
             }
         }
 
+        //Actualiza los datos de un cine.
         public function Update($id, $name, $adress )
         {
             try{

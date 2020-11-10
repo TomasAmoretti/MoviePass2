@@ -5,18 +5,19 @@
     use DAO\QueryType as QueryType;
     use Models\Show as Show;
     use Models\Room as Room;
+    use \Exception as Exception;
 
     class ShowDAO
     {
         private $connection;
         private $tableName = "Shows";
 
-
+        //Agrega una funcion a la cartelera
         public function Add($show)
         {
             try
             {
-                $query = "CALL Shows_Add(?, ?, ?, ?, ?)";
+                $query = "CALL Shows_Add(?, ?, ?, ?, ?)";//Se guarda la accion que se hara en la BDD
                 
                 $parameters["id_room"] =  $show->getRoom()->getId();
                 $parameters["id_movie"] = $show->getIdMovie();
@@ -25,7 +26,7 @@
                 $parameters["state"] = $show->getState();  
 
                 $this->connection = Connection::GetInstance();
-                $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+                $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion en la BDD
 
             }
             catch(Exception $ex)
@@ -34,17 +35,18 @@
             }
         }
         
+        //Obtiene todas las funciones que esten en la Base de Datos
         public function GetAll()
         {
             try
             {
                 $showList = array();
 
-                $query = "CALL Shows_GetAll()";
+                $query = "CALL Shows_GetAll()";//Se guarda la accion que se hara en la BDD
     
                 $this->connection = Connection::GetInstance();
     
-                $result = $this->connection->Execute($query, array(), QueryType::StoredProcedure);
+                $result = $this->connection->Execute($query, array(), QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
                 foreach($result as $row)
                 {
@@ -68,18 +70,18 @@
             }
         }
 
-
+        
         public function GetTable()
         {
             try
             {
                 $showList = array();
 
-                $query = "CALL Shows_GetTable()";
+                $query = "CALL Shows_GetTable()";//Se guarda la accion que se hara en la BDD
     
                 $this->connection = Connection::GetInstance();
     
-                $result = $this->connection->Execute($query, array(), QueryType::StoredProcedure);
+                $result = $this->connection->Execute($query, array(), QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
                 foreach($result as $row)
                 {
@@ -103,19 +105,20 @@
             }
         }
 
+        //Obtiene las funciones a traves de una fecha en particular
         public function GetByDate($day)
         {
             try
             {
                 $showList = array();
 
-                $query = "CALL Shows_GetByDate(?)";
+                $query = "CALL Shows_GetByDate(?)";//Se guarda la accion que se hara en la BDD
 
                 $parameters["day"] =  $day;
 
                 $this->connection = Connection::GetInstance();
 
-                $result = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);
+                $result = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
                 foreach($result as $row)
                 {
@@ -138,18 +141,19 @@
             }
         }
 
+        //Obtiene las funciones a traves de la "id"
         public function GetById($id)
         {
             try
             {
                
-                $query = "CALL Shows_GetById(?)";
+                $query = "CALL Shows_GetById(?)";//Se guarda la accion que se hara en la BDD
 
                 $parameters["id"] =  $id;
 
                 $this->connection = Connection::GetInstance();
 
-                $result = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);
+                $result = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
                 foreach($result as $row)
                 {
@@ -171,18 +175,18 @@
             }
         }
 
-
+        //Elimina una funcion de la Base de Datos
         public function Remove($id)
         {
             try
             {
-                $query = "CALL Shows_Remove(?)";
+                $query = "CALL Shows_Remove(?)";//Se guarda la accion que se hara en la BDD
 
                 $parameters["id_show"] =  $id;
 
                 $this->connection = Connection::GetInstance();
 
-                $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+                $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion en la BDD
             }   
             catch(Exception $ex)
             {

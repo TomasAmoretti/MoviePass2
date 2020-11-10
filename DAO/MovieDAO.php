@@ -9,6 +9,7 @@ class MovieDAO {
     private $moviesList = array();
     private $genresList = array();
     
+    //Trae todas las peliculas
     public function getMovies(){
         
         $this->retrieveMovies();
@@ -16,11 +17,13 @@ class MovieDAO {
         return $this->moviesList;
     }
     
+    //Trae todos los generos de las peliculas
     public function getGenres(){
         $this->retrieveGenres();
         return $this->genresList;
     }
 
+    //Obtiene las peliculas a partir del "id" de un genero de la pelicula
     public function getMoviesByGenre($id_genre){
         $this->retrieveMovies();
         $newMoviesList = [];
@@ -35,8 +38,9 @@ class MovieDAO {
         return $returnedValue;
     }
 
+    //Obtiene la duracion de una pelicula a travez de la API
     public function retrieveDurationOneMovieFromApi($id) {
-        $json = file_get_contents("https://api.themoviedb.org/3/movie/" . $id . "?api_key=499b6c2316b484f72da9054c9957ca97");
+        $json = file_get_contents("https://api.themoviedb.org/3/movie/" . $id . "?api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
         $APIDataArray = json_decode($json, true);
         $runtime = $APIDataArray["runtime"];
         if($runtime == null) {
@@ -45,9 +49,10 @@ class MovieDAO {
         return $runtime;
     }
 
+    //Obtiene las peliculas a traves de la API
     private function retrieveMovies(){
 
-        $json = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?page=1&language=en&api_key=499b6c2316b484f72da9054c9957ca97");
+        $json = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?page=1&language=en&api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
         
         $arrayToDecode = ($json) ? json_decode($json, true) : array();
         $arrayMovies = array_shift($arrayToDecode);
@@ -62,10 +67,10 @@ class MovieDAO {
         
     }
 
-
+    //Obtiene los generos de las peliculas a traves de la API
     public function retrieveGenres(){
                 
-        $json = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=499b6c2316b484f72da9054c9957ca97");
+        $json = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
         $arrayToDecode = ($json) ? json_decode($json, true) : array();
         $arrayGeneros = array_shift($arrayToDecode);
 
@@ -80,6 +85,7 @@ class MovieDAO {
             }
     }
 
+    //Obtiene un genero a partir de una "id"
     public function getGenreForId($id_buscado){
         $generoARetornar;
         for($i=0; $i < count($this->genresList) ; $i++)

@@ -6,6 +6,7 @@
     use Models\PerfilUser as PerfilUser;
     use Models\User as User;
     use Models\Rol as Rol;
+    use \Exception as Exception;
 
     class UserDAO
     {
@@ -13,11 +14,12 @@
         private $connection;
         private $tableName = "Users"; 
 
+        //Agrega un usuario a la Base de Datos
         public function Add(PerfilUser $user){
 
             try
             {
-                $query = "CALL Users_Add (?, ?, ?, ?, ?, ?)";
+                $query = "CALL Users_Add (?, ?, ?, ?, ?, ?)";//Se guarda la accion que se hara en la BDD
 
                 $parameters["firstName"] =  $user->getFirstName();
                 $parameters["lastName"] = $user->getLastName();
@@ -28,7 +30,7 @@
                   
                 $this->connection = Connection::GetInstance();
     
-                $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+                $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion en la BDD
             }   
             catch(Exception $ex)
             {
@@ -37,7 +39,7 @@
 
         }
 
-        
+        //Obtiene el usuario a traves del "email"
         public function GetByEmail($email){
 
             try
@@ -46,13 +48,13 @@
                 $user = null;
                 $perfilUser = null;
 
-                $query = "CALL Users_GetByEmail(?)";
+                $query = "CALL Users_GetByEmail(?)";//Se guarda la accion que se hara en la BDD
 
                 $parameters["email"] = $email;
 
                 $this->connection = Connection::GetInstance();
 
-                $results = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);
+                $results = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
                 foreach($results as $row)
                 {
@@ -80,6 +82,7 @@
             }
         }
 
+        //Trae a todos los usuarios que esten cargados en la Base de Datos
         public function GetAll($email){
 
             try
@@ -90,13 +93,13 @@
                 $userList = array();
 
 
-                $query = "CALL Users_GetAll()";
+                $query = "CALL Users_GetAll()";//Se guarda la accion que se hara en la BDD
 
                 $parameters["email"] = $email;
 
                 $this->connection = Connection::GetInstance();
 
-                $results = $this->connection->Execute($query, array(), QueryType::StoredProcedure);
+                $results = $this->connection->Execute($query, array(), QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
                 foreach($results as $row)
                 {

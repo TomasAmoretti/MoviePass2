@@ -5,6 +5,7 @@ use DAO\Connection as Connection;
 use DAO\QueryType as QueryType;
 use Interfaces\IDao as IDao;
 use Models\Room as Room;
+use \Exception as Exception;
 
 
 class RoomDAO implements IDao {
@@ -12,11 +13,12 @@ class RoomDAO implements IDao {
     private $connection;
     private $tableName = "Rooms";
     
+    //Agrega una sala a un cine en especifico
     public function Add($cinema)
     {
         try
         {
-            $query = "CALL Rooms_Add(?, ?, ?, ?, ?)";
+            $query = "CALL Rooms_Add(?, ?, ?, ?, ?)";//Se guarda la accion que se hara en la BDD
             
             $parameters["id_cinema"] = $cinema->getId(); 
             $parameters["room_name"] =  $cinema->getRoom()->getName();
@@ -25,7 +27,7 @@ class RoomDAO implements IDao {
             $parameters["state"] = $cinema->getRoom()->getState();     
         
             $this->connection = Connection::GetInstance();
-            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion en la BDD
         }
         catch(Exception $ex)
         {
@@ -33,20 +35,20 @@ class RoomDAO implements IDao {
         }
     }
 
-
+    //Obtiene una sala a traves de la "id" de la sala
     public function GetById($id)
     {
         try
         {
             
 
-            $query = "CALL Rooms_GetById(?)";
+            $query = "CALL Rooms_GetById(?)";//Se guarda la accion que se hara en la BDD
 
             $parameters["id_room"] =  $id;
 
             $this->connection = Connection::GetInstance();
 
-            $result = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);
+            $result = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
                 
             foreach($result as $row){
 
@@ -69,17 +71,18 @@ class RoomDAO implements IDao {
         }
     }
 
+    //Se elimina una sala de la Base de Datos
     public function Remove($id)
     {
         try
         {
-            $query = "CALL Rooms_Remove(?)";
+            $query = "CALL Rooms_Remove(?)";//Se guarda la accion que se hara en la BDD
 
             $parameters["id_room"] =  $id;
 
             $this->connection = Connection::GetInstance();
 
-            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion en la BDD
         }   
         catch(Exception $ex)
         {
@@ -87,18 +90,18 @@ class RoomDAO implements IDao {
         }
     }
 
-
+    //Trae a todas las salas que esten guardadas en la Base de Datos
     public function GetAll()
     {
         try
         {
             $tableList = array();
 
-            $query = "CALL Rooms_GetAll()";
+            $query = "CALL Rooms_GetAll()";//Se guarda la accion que se hara en la BDD
 
             $this->connection = Connection::GetInstance();
 
-            $result = $this->connection->Execute($query, array(), QueryType::StoredProcedure);
+            $result = $this->connection->Execute($query, array(), QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
             return $result;
         }
@@ -108,12 +111,12 @@ class RoomDAO implements IDao {
         }
     }
 
-
+    //Actualiza los datos de las salas 
     public function Update($cinema)
     {
         try
         {
-            $query = "CALL Rooms_Update(?, ?, ?, ?, ?)";
+            $query = "CALL Rooms_Update(?, ?, ?, ?, ?)";//Se guarda la accion que se hara en la BDD
 
             $parameters["id_room"] =  $cinema->getRoom()->getId();
             $parameters["id_cinema"] =  $cinema->getId();
@@ -124,7 +127,7 @@ class RoomDAO implements IDao {
 
             $this->connection = Connection::GetInstance();
 
-            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);
+            $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion en la BDD
         }   
         catch(Exception $ex)
         {
