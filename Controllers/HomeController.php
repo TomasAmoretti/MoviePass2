@@ -176,7 +176,7 @@
                 $roomsList = $roomController->GetAll();
                 $showsList = $showController->GetAll();  
             
-                require_once(VIEWS_PATH."client-shows-list.php");
+                require_once(VIEWS_PATH."client-show-list.php");
             }else{
                 $userController->Logout();
             }
@@ -199,7 +199,7 @@
                 $roomsList = $roomController->GetAll();
                 $showsList = $showController->getMovieByDate($day);  
             
-                require_once(VIEWS_PATH."client-shows-list.php");
+                require_once(VIEWS_PATH."client-show-list.php");
             }else{
                 $userController->Logout();
             }
@@ -222,7 +222,7 @@
                 $roomsList = $roomController->GetAll();
                 $showsList = $showController->GetAll();  
             
-                require_once(VIEWS_PATH."client-shows-list.php");
+                require_once(VIEWS_PATH."client-show-list.php");
             }else{
                 $userController->Logout();
             }
