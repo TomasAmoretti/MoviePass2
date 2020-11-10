@@ -26,7 +26,7 @@
             $this->homeController = new HomeController;
         }
 
-        // 
+        // Función de compra entrada, genera el ticket con los datos y el precio (pueden ser uno o más tickets).
         public function Add($count_tickets, $id_user, $id_show){
            
             try{
@@ -59,7 +59,7 @@
         }
 
 
-
+        //Obtiene el historial de compras.
         public function GetAll(){
 
             try{
