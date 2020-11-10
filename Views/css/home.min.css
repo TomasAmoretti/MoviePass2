@@ -8788,6 +8788,9 @@ a:focus {
     background-image: linear-gradient(180deg, #f6c23e 10%, #dda20a 100%);
     background-size: cover;
 }
+.copyright.text-center.my-auto {
+    color: white;
+}
 .bg-gradient-danger {
     background-color: #e74a3b;
     background-image: linear-gradient(180deg, #e74a3b 10%, #be2617 100%);
