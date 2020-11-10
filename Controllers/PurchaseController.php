@@ -16,7 +16,8 @@
         private $showDAO;
         private $roomDAO;
         private $homeController;
-
+        
+        // Método constructor.
         public function __construct()
         {
             $this->purchaseDAO = new PurchaseDAO();
@@ -25,15 +26,14 @@
             $this->homeController = new HomeController;
         }
 
-
+        // 
         public function Add($count_tickets, $id_user, $id_show){
            
             try{
 
                 $purchase = new Purchase();
-
+                //Retorna la función de cine a través del ID.
                 $show = $this->showDAO->getById($id_show);
-
                 $room = $this->roomDAO->getById($show->getRoom());
 
                 $date = date('Y-m-d', time());

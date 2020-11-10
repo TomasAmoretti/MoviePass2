@@ -26,7 +26,7 @@
             require_once(VIEWS_PATH."home-register.php");
         }
 
-
+        //Valida la sesión y muestra una lista de cines al Admin.
         public function CinemasView( $validMessage = null ){
 
             $userController = new UserController();
@@ -43,6 +43,7 @@
             }
         }
 
+        //Muestra la lista de los cines junto a sus salas.
         public function RoomsView( $validMessage = null ){
 
             $userController = new UserController();
@@ -61,6 +62,7 @@
             }
         }
 
+        //Muestra una lista completa de las películas y las salas donde se encuentran.
         public function ShowsViewAdmin( $validMessage = null ){
 
             $userController = new UserController();
@@ -84,6 +86,7 @@
             }
         }
 
+        // Muestra al admin 
         public function InfoViewAdmin( $validMessage = null ){
 
             $userController = new UserController();
@@ -110,7 +113,7 @@
         }
 
 
-
+        //Muestra al cliente películas junto a sus géneros y horarios.
         public function ShowsViewClient(){
 
             $userController = new UserController();
@@ -135,6 +138,7 @@
             }
         }
 
+        //Muestra descripción de la película a través de una ID.
         public function MovieDescription($id_show){
 
             $userController = new UserController();
@@ -157,7 +161,7 @@
             }
         }
 
-
+        // Muestra lista de películas a través del ID del género.
         public function MovieListByGenre($id){
 
             $userController = new UserController();
@@ -181,6 +185,7 @@
             }
         }
 
+        // Muestra las películas de un determinado día.
         public function MovieListByDate($day){
 
             $userController = new UserController();
@@ -204,6 +209,7 @@
             }
         }
 
+        // 
         public function PurchasesList(){
 
             $userController = new UserController();
