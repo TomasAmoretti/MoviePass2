@@ -41,7 +41,10 @@
             }
         }
         
-
+        public function GetById($id){
+            
+            return $this->roomDAO->GetById($id);
+        }
 
         public function Add( $id_cinema, $room_name, $capacity, $price)
         {

@@ -99,6 +99,8 @@
 
                 $moviesList = $movieController->GetMovies();
                 
+                $roomList = $roomController->GetAll();
+
                 $showsList = $showController->GetTable();
 
                 $purchasesList = $purchaseController->GetAll();
@@ -147,7 +149,6 @@
             if($user){
                 $moviesList = $movieController->GetMovies();
                 $genresList = $movieController->GetGenres();
-                
                 $roomsList = $roomController->GetAll();
                 $show = $showController->GetById($id_show);  
             

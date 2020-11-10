@@ -8751,8 +8751,22 @@ a:focus {
     animation-timing-function: opacity cubic-bezier(0, 1, 0.4, 1);
 }
 .bg-gradient-primary {
-    background-color: #141414;
+    animation: BGcolorChanging-4backgrounds 6s linear infinite alternate both;
     background-size: cover;
+}
+@keyframes BGcolorChanging-4backgrounds {
+	0% {
+	  background: #2415f3;
+	}
+	33.3333% {
+	  background: #8b113e;
+	}
+	66.666% {
+	  background: #1685ad;
+	}
+	100% {
+	  background: #068306;
+	}
 }
 .bg-gradient-secondary {
     background-color: #858796;

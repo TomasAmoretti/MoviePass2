@@ -3078,6 +3078,9 @@ a.paginator-item:hover {
   font-family: 'Oswald';
   font-size: 0.875rem;
 }
+.movie-info-entity .entity-content {
+  background: white;
+}
 .article-tape-entity .entity-date .tape-content {
   font-size: 0.875rem;
 }

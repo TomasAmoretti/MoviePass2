@@ -72,7 +72,6 @@
             try{
                 $this->cinemaDAO->Remove($id);
                 $this->homeController->CinemasView();
-
             }     
             catch(\PDOException $e){
           

@@ -81,6 +81,19 @@
                                 <li>
                                     <span class="entity-list-title">Synopsis:</span><?php echo $movie->getOverview(); ?>
                                 </li>
+                                <li>
+                                    <span class="entity-list-title">Room:</span><?php echo $show->getRoom(); ?>
+                                </li>
+
+                                <li>
+                                    <span class="entity-list-title">Price:</span><?php 
+                                        foreach($roomsList as $room){
+                                            if($room["id_room"] == $show->getRoom()){
+                                                echo $room["price"]; 
+                                            }
+                                        }
+                                        ?>
+                                </li>
 
                                 <li>
                                     <form  action="<?php echo FRONT_ROOT ?>Purchase/Add" method="POST">

@@ -35,6 +35,7 @@
                     <th>Room</th>
                     <th>Date</th>
                     <th>Hour</th>
+                    <th>Price</th>
                     <th>Action</th>
 
                 </tr>
@@ -52,7 +53,13 @@
                     <td><?php echo $shows["room_name"]; ?></td>
                     <td><?php echo $shows["day"]; ?></td>
                     <td><?php echo $shows["hour"]; ?></td>
-
+                    <td><?php 
+                        foreach($roomsList as $room){
+                            if($room["id_room"] == $shows["id_room"]){
+                                echo $room["price"]; 
+                            }
+                        }
+                        ?></td>
                     <td>
                         <div class="form-inline">
                             <form action="<?php echo FRONT_ROOT."Show/Remove"?>">

@@ -24,7 +24,7 @@
 
         <div class="form-group mb-4">
                 <button type="button" class="btn btn-success mr-4" data-toggle="modal" data-target="#form-cine">
-                    <img src="<?php echo ICONS_PATH."plus.svg"?>" width="16" height="16" alt="Add"/>   Add Row 
+                    <img src="<?php echo ICONS_PATH."plus.svg"?>" width="16" height="16" alt="Add"/>   Add Cinema 
                 </button>
         </div>
         
