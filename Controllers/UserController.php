@@ -143,30 +143,6 @@
             throw $ex;
         }
     }
-        public function loginWithFacebook2($fbUserData) {
-
-            if($this->verifyIfTheUserEmailBeUsing($this->userDAO->GetAll(),$fbUserData["email"]))
-            {
-                $userLoggerFB=$this->userDAO->GetByEmail($fbUserData["email"]);
-                if($userLoggerFB != null) 
-                {
-                    $this->setSession($userLoggerFB);
-                    $message = "Welcome "  . $fbUserData["first_name"] . "!";
-                    $this->homeController->Index();
-                }
-            }
-            else
-            {
-                $accountRegisterByFB["id"]=$fbUserData["id"];
-                $accountRegisterByFB["email"]=$fbUserData["email"];
-                $accountRegisterByFB["password"]=$fbUserData["password"];
-                $accountRegisterByFB["confirm_password"]=$fbUserData["password"];
-                $accountRegisterByFB["firstName"]=$fbUserData["first_name"];
-                $accountRegisterByFB["lastName"]=$fbUserData["last_name"];
-                $accountRegisterByFB["photo"]=$fbUserData["picture"];
-                $this->createUserUsingFacebook($accountRegisterByFB);
-            }
-        }
 
         private function verifyIfTheUserEmailBeUsing($accountsList, $userEmail) {
             $result=false;
