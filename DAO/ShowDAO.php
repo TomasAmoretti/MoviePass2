@@ -54,11 +54,12 @@
                     $room = new Room();
 
                     $show->setId($row["id_show"]);
-                    $show->setRoom($room->setId($row["id_room"]));
+                    $room->setId($row["id_room"]);
+                    $show->setRoom($room);
                     $show->setIdMovie($row["id_movie"]);
                     $show->setDay($row["day"]);
                     $show->setHour($row["hour"]);
-                
+                    
                     array_push($showList, $show);
                 }
                 return $showList;
@@ -94,6 +95,7 @@
                     $show->setDay($row["day"]);
                     $show->setHour($row["hour"]);
                 
+                    
                     array_push($showList, $show);
                 }
                 return $result;
