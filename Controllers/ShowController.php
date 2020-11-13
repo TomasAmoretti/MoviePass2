@@ -93,7 +93,7 @@
             try{
 
                 //$this->validateProyectedMovie($day, $hour);
-                $this->validateHour($day, $hour);
+                $this->validateHour($day, $hour, $id_movie);
                
                 
                 $show = new Show();  
@@ -163,36 +163,32 @@
 
         }*/
 
-        public function validateHour($day,$hour){
+        public function validateHour($day,$hour, $idMovie){
 
-            $cinemaList = $this->cinemaDAO->GetAll();
-           /*showlist get all*/ 
-            $hrs = $this->hourToDecimal($hour);
-            //$showList = $this->showDAO->GetAll();
+            $roomList = $this->roomDAO->GetAll();
+            $hrs = $this->hourToDecimal($hour);//A que hora empieza la pelicula que quiero cargar
+            $newMovie = $this->movieDuration($idMovie, $hrs);//A que hora termina la pelicula que quiero cargar
             $showList = $this->showDAO->GetTable();
-            //var_dump($showList);
 
             foreach($showList as $show){
-                var_dump($show);//----------------ACA ESTA EL VAR_DUMP-------------------------//
-                foreach($cinemaList as $cinema){
+                
+                foreach($roomList as $room){
 
-                    //$cinema = $cinema->getcinema();
-                    
-
-                    if($cinema->getName() === $show['cinema_name']){
-
-                        //if($cinema->getRoom()->getId() === $show['id_room']){
+                    if($room['cinema_name'] == $show['cinema_name']){
                         
-                            if($day === $show['day']){
+                        if($room['room_name'] == $show['room_name']){
+                            
+                            if($day == $show['day']){
 
-                                $showHour = $this->hourToDecimal($show['hour']);
-            
-                                if($hrs == $showHour ||  $hrs >  ($this->movieDuration($show, $showHour))|| $hrs <  ( $this->movieDuration($show, $showHour)) ){
-            
+                                $showHour = $this->hourToDecimal($show['hour']);//A que hora empieza la pelicula que esta en la cartelera en el mismo dia
+                                $endMovie = $this->movieDuration($show['id_movie'], $showHour);//A que hora termina la pelicula que esta en la cartelera en el mismo dia
+                
+                                if($hrs == $endMovie || ($hrs < ($endMovie) && $hrs < ($showHour))){
+                
                                     throw new Exception("El horario no esta disponible!");
                                 }
                             }   
-                        //}
+                        }   
                     }
                 }
            }
@@ -200,25 +196,19 @@
 
         //Obtiene la duracion de la pelicula, le agrega los 15 minutos que hay entre las peliculas
         // y se lo suma al horario en el que empieza la pelicula para asi saber cuando termina
-        public function movieDuration($show, $showHour){
+        public function movieDuration($idMovie, $showHour){
 
-            $duration = $this->movieDAO->retrieveDurationOneMovieFromApi($show['id_movie']);
+            $duration = $this->movieDAO->retrieveDurationOneMovieFromApi($idMovie);
             $descanso = $duration + 15;
             $total = $showHour + $descanso;
-            //var_dump($show);
             return $total;
         } 
 
         //Convierte la hora en decimal
         private function hourToDecimal($time)
         {
-            //var_dump($time);
             $hms = explode(":", $time);
-            return ($hms[0] + ($hms[1]/60) );
+            return (($hms[0]*60) + $hms[1]);
         }
-
-
-        
-
 
     }
