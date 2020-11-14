@@ -5,17 +5,21 @@
     use DAO\CinemaDAO as CinemaDAO;
     use Models\Cinema as Cinema;
     use Controllers\HomeController as HomeController;
+    use Models\Show as Show;
+    use DAO\ShowDAO as ShowDAO;
 
     class CinemaController
     {
         private $cinemaDAO;
         private $homeController;
+        private $showDAO;
         
         //Método constructor.
         public function __construct()
         {
             $this->cinemaDAO = new CinemaDAO();
             $this->homeController = new HomeController();
+            $this->showDAO = new ShowDAO();
         }
         
         //Método para recibir todos los cines en un array.
@@ -41,7 +45,9 @@
         {
             try{
                 $this->validateName($name);
+                echo 'toy aca 1';
                 $this->validateAdress($adress);
+                echo 'toy aca 2';
 
                 $cinema = new Cinema();
                 $cinema->setName($name);
@@ -75,6 +81,8 @@
         public function Remove($id)
         {
             try{
+
+                $this->validateRoomShow($id);
                 $this->cinemaDAO->Remove($id);
                 $this->homeController->CinemasView();
             }     
@@ -111,11 +119,13 @@
         private function validateName($name){
 
             $cinemaList = $this->cinemaDAO->GetAll();
+
             $cinemaName = str_replace(' ', '', $name);
             foreach($cinemaList as $cinema){
 
                 $cinemaNameBDD = str_replace(' ', '', $cinema->getName());
                 if(strcasecmp($cinemaName, $cinemaNameBDD) == 0){
+                    echo 'El nombre del cine ya existe';
                     throw new PDOException("El nombre del cine ya existe");
                 }
             }
@@ -132,6 +142,19 @@
                     throw new PDOException("La direccion ingresada pertenece a otro cine ya cargado");
                 }
             }
+        }
+
+        private function validateRoomShow($idCinema){
+
+            $cinema = $this->cinemaDAO->GetById($idCinema);
+            $showList = $this->showDAO->GetTable();
+            foreach($showList as $show){
+
+                if($show['cinema_name'] == $cinema){
+
+                    throw new PDOException("El cine no se puede eliminar porque tiene funciones");
+                }
+            } 
         }
 
         
