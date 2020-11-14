@@ -97,7 +97,7 @@
         public function Update($id, $name, $adress )
         {
             try{
-                $this->validateName($name);
+                $this->validateNewName($name, $id);
                 $this->validateAdress($adress);
                             
                 $cinema = new Cinema();
@@ -119,12 +119,27 @@
         private function validateName($name){
 
             $cinemaList = $this->cinemaDAO->GetAll();
-
             $cinemaName = str_replace(' ', '', $name);
             foreach($cinemaList as $cinema){
 
                 $cinemaNameBDD = str_replace(' ', '', $cinema->getName());
                 if(strcasecmp($cinemaName, $cinemaNameBDD) == 0){
+                    echo 'El nombre del cine ya existe';
+                    throw new PDOException("El nombre del cine ya existe");
+                }
+            }
+        }
+
+        private function validateNewName($name, $idCinema){
+
+            $cinemaList = $this->cinemaDAO->GetAll();
+            $cinema2 = $this->cinemaDAO->GetById($idCinema);
+            $cinemaNewName = str_replace(' ', '', $name);
+            foreach($cinemaList as $cinema){
+
+                $cinemaNameBDD = str_replace(' ', '', $cinema->getName());
+                $cinemaName = str_replace(' ', '', $cinema2->getName());
+                if((strcasecmp($cinemaNewName, $cinemaNameBDD) == 0) && ((strcasecmp($cinemaNewName, $cinemaName)) != 0)){
                     echo 'El nombre del cine ya existe';
                     throw new PDOException("El nombre del cine ya existe");
                 }
@@ -139,6 +154,7 @@
 
                 $cinemaAdressBDD = str_replace(' ', '', $cinema->getAdress());
                 if(strcasecmp($cinemaAdress, $cinemaAdressBDD) == 0){
+                    echo "La direccion ingresada pertenece a otro cine ya cargado";
                     throw new PDOException("La direccion ingresada pertenece a otro cine ya cargado");
                 }
             }

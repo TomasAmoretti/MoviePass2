@@ -127,6 +127,8 @@
 
                 $this->showDAO->Remove($id);
 
+                $this->homeController->ShowsViewAdmin();
+
             }
             catch(\PDOException $e){
 
