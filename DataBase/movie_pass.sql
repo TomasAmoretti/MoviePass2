@@ -191,7 +191,7 @@ CREATE PROCEDURE Cinemas_GetById (IN id INT)
 BEGIN
 	SELECT c.id_cinema, c.cinema_name, c.adress, c.state
     FROM Cinemas c
-    WHERE (c.id_cinema = id);
+    WHERE c.id_cinema = id AND c.state = true;
 END$$
 DELIMITER ;
 
@@ -233,7 +233,7 @@ BEGIN
 	SELECT c.id_cinema as id_cinema, c.cinema_name, r.id_room, r.room_name , r.capacity , r.price
     FROM Cinemas c
     INNER JOIN Rooms r ON c.id_cinema = r.id_cinema 
-    WHERE (r.state = true);
+    WHERE r.state = true AND c.state = true;
 END$$
 DELIMITER ;
 
