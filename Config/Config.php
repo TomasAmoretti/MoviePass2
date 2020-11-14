@@ -19,7 +19,7 @@ define("VENDOR_PATH", FRONT_ROOT.VIEWS_PATH ."vendor/");
 define("DB_HOST", "localhost");
 define("DB_NAME", "movie_pass");
 define("DB_USER", "root");
-define("DB_PASS", "");
+define("DB_PASS", "admin");
 
 ?>
 
