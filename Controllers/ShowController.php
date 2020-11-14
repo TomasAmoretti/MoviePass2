@@ -163,10 +163,9 @@
                     if($room['cinema_name'] == $show['cinema_name']){
                         
                         if(($day == $show['day']) && ($hour != $show['hour']) && ($idMovie == $show['id_movie'])){
-                            echo 'toy aca';
+                            //echo 'toy aca';
                             throw new Exception("Esta pelicula ya esta cargada en este cine y en este dia!");
-                        }
-                        
+                        }                        
                         if($room['room_name'] == $show['room_name']){
                             
                             if($day == $show['day']){
