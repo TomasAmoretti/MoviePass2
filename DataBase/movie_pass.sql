@@ -185,7 +185,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-#DROP procedure IF EXISTS `Cinemas_GetAll`;
+#DROP procedure IF EXISTS `Cinemas_GetById`;
 DELIMITER $$
 CREATE PROCEDURE Cinemas_GetById (IN id INT)
 BEGIN
@@ -280,7 +280,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-#call movie_pass.Shows_Add(1,330457, "2020-11-6", "21:30", true);
+#call movie_pass.Shows_Add(1,330457, "2020-11-20", "21:30", true);
 
 #DROP procedure IF EXISTS `Shows_GetTable`;
 DELIMITER $$
