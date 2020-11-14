@@ -92,7 +92,6 @@
 
             try{
 
-                //$this->validateProyectedMovie($day, $hour);
                 $this->validateHour($day, $hour, $id_movie);
                
                 
@@ -150,19 +149,6 @@
             }
         }
 
-        /*public function validateProyectedMovie($day,$hour){
-
-            $showList = $this->GetAll();
-            $hrs = $this->hourToDecimal($hour);
-            foreach($showList as $show){
-
-                if($day === $show->getDay()){
-
-                }
-            }
-
-        }*/
-
         public function validateHour($day,$hour, $idMovie){
 
             $roomList = $this->roomDAO->GetAll();
@@ -176,17 +162,25 @@
 
                     if($room['cinema_name'] == $show['cinema_name']){
                         
+                        if(($day == $show['day']) && ($hour != $show['hour']) && ($idMovie == $show['id_movie'])){
+                            echo 'toy aca';
+                            throw new Exception("Esta pelicula ya esta cargada en este cine y en este dia!");
+                        }
+                        
                         if($room['room_name'] == $show['room_name']){
                             
                             if($day == $show['day']){
 
                                 $showHour = $this->hourToDecimal($show['hour']);//A que hora empieza la pelicula que esta en la cartelera en el mismo dia
                                 $endMovie = $this->movieDuration($show['id_movie'], $showHour);//A que hora termina la pelicula que esta en la cartelera en el mismo dia
-                
-                                if($hrs == $endMovie || ($hrs < ($endMovie) && $hrs < ($showHour))){
-                
+                                
+                                if($newMovie < $showHour){
+                                    echo "La pelicula fue cargada con exito";
+                                }elseif($hrs > $endMovie){
+                                    echo "La pelicula fue cargada con exito";
+                                }else{
                                     throw new Exception("El horario no esta disponible!");
-                                }
+                                }                                   
                             }   
                         }   
                     }
