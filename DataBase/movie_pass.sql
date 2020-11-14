@@ -199,8 +199,8 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE Cinemas_Remove (IN id INT)
 BEGIN
-	UPDATE Cinemas as c
-    SET c.state = false    WHERE (c.id_cinema = id);
+	DELETE FROM Cinemas as c
+    WHERE (c.id_cinema = id);
 END$$
 DELIMITER ;
 
@@ -241,8 +241,8 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE Rooms_Remove (IN id_room INT)
 BEGIN
-	UPDATE Rooms r
-    SET r.state = false    WHERE (r.id_room = id_room);
+	DELETE FROM Rooms r
+    WHERE (r.id_room = id_room);
 END$$
 DELIMITER ;
 
@@ -321,8 +321,8 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE Shows_Remove (IN id_show INT)
 BEGIN
-	UPDATE Shows s
-    SET s.state = false    WHERE (s.id_show = id_show);
+	DELETE FROM Shows s
+    WHERE (s.id_show = id_show);
 END$$
 DELIMITER ;
 
