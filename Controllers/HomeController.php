@@ -19,7 +19,7 @@
         }
  
         public function Index($message = ""){
-            require_once(VIEWS_PATH."home.php");
+            require_once(VIEWS_PATH."client-show-list.php");
         }      
 
         public function Register(){
@@ -123,9 +123,9 @@
             $roomController = new RoomController();
             $showController = new ShowController();
 
-            $user = $userController->checkSession();
+            //$user = $userController->checkSession();
             
-            if($user){
+            //if($user){
 
                 $moviesList = $movieController->GetMovies();
                 $genresList = $movieController->GetGenres();
@@ -135,9 +135,9 @@
 
             
                 require_once(VIEWS_PATH."client-show-list.php");
-            }else{
+            /*}else{
                 $userController->Logout();
-            }
+            }*/
         }
 
         //Muestra descripción de la película a través de una ID.
