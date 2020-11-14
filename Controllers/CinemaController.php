@@ -40,6 +40,9 @@
         public function Add($name, $adress)
         {
             try{
+                $this->validateName($name);
+                $this->validateAdress($adress);
+
                 $cinema = new Cinema();
                 $cinema->setName($name);
                 $cinema->setAdress($adress);
@@ -86,6 +89,8 @@
         public function Update($id, $name, $adress )
         {
             try{
+                $this->validateName($name);
+                $this->validateAdress($adress);
                             
                 $cinema = new Cinema();
                 $cinema->setId($id);
@@ -100,6 +105,32 @@
           
                 $message = $e->getMessage();
                 $this->homeController->CinemasView($message);
+            }
+        }
+
+        private function validateName($name){
+
+            $cinemaList = $this->cinemaDAO->GetAll();
+            $cinemaName = str_replace(' ', '', $name);
+            foreach($cinemaList as $cinema){
+
+                $cinemaNameBDD = str_replace(' ', '', $cinema->getName());
+                if(strcasecmp($cinemaName, $cinemaNameBDD) == 0){
+                    throw new PDOException("El nombre del cine ya existe");
+                }
+            }
+        }
+
+        private function validateAdress($adress){
+
+            $cinemaList = $this->cinemaDAO->GetAll();
+            $cinemaAdress = str_replace(' ', '', $adress);
+            foreach($cinemaList as $cinema){
+
+                $cinemaAdressBDD = str_replace(' ', '', $cinema->getAdress());
+                if(strcasecmp($cinemaAdress, $cinemaAdressBDD) == 0){
+                    throw new PDOException("La direccion ingresada pertenece a otro cine ya cargado");
+                }
             }
         }
 
