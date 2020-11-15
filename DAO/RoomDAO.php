@@ -24,8 +24,8 @@ class RoomDAO implements IDao {
             $parameters["room_name"] =  $cinema->getRoom()->getName();
             $parameters["capacity"] = $cinema->getRoom()->getCapacity();
             $parameters["price"] = $cinema->getRoom()->getPrice();
-            $parameters["state"] = $cinema->getRoom()->getState();     
-        
+            $parameters["state"] = true;     
+
             $this->connection = Connection::GetInstance();
             $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion en la BDD
         }

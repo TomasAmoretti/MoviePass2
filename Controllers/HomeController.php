@@ -30,12 +30,14 @@
         public function CinemasView( $validMessage = null ){
 
             $userController = new UserController();
+            $roomController = new RoomController();
             $cinemaController = new CinemaController();
             
             $user = $userController->checkSession();
             if($user){
 
                 $cinemasList = $cinemaController->GetAll();
+                $roomsList = $roomController->GetAll();
                 require_once(VIEWS_PATH."admin-cinemas.php");
 
             }else{
