@@ -49,8 +49,8 @@
 
                     <td>
                     <div class="form-inline" >
-                        <form action="<?php echo FRONT_ROOT."Cinema/Remove"?>">
-                            <button type="submit" name="remove" class="btn btn-danger" value="<?php echo $cinema->getId() ?>"> 
+                        <form action="<?php echo FRONT_ROOT."Cinema/Remove"?>" method="POST">
+                            <button type="submit" name="remove" class="btn btn-danger" value="<?php echo $cinema->getId(); ?>"> 
                                 <img src="<?php echo ICONS_PATH."trash-2.svg"?>" width="16" height="16" alt="Remove"/>    
                             </button>
                         </form>

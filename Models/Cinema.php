@@ -8,11 +8,7 @@ class Cinema{
     private $id;
     private $name; //string
     private $adress; //string
-
     private $room;
-    private $opening_time;
-    private $closing_time;
-
     private $state; //boolean;
 
     //Getters
@@ -45,7 +41,6 @@ class Cinema{
     public function setRoom(Room $room){
         $this->room = $room;
     }
-
     public function setState($state){
         $this->state = $state;
     }
