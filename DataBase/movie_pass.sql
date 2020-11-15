@@ -185,13 +185,13 @@ BEGIN
 END$$
 DELIMITER ;
 
-#DROP procedure IF EXISTS `Cinemas_GetAll`;
+#DROP procedure IF EXISTS `Cinemas_GetById`;
 DELIMITER $$
 CREATE PROCEDURE Cinemas_GetById (IN id INT)
 BEGIN
 	SELECT c.id_cinema, c.cinema_name, c.adress, c.state
     FROM Cinemas c
-    WHERE (c.id_cinema = id);
+    WHERE c.id_cinema = id AND c.state = true;
 END$$
 DELIMITER ;
 
@@ -233,7 +233,7 @@ BEGIN
 	SELECT c.id_cinema as id_cinema, c.cinema_name, r.id_room, r.room_name , r.capacity , r.price
     FROM Cinemas c
     INNER JOIN Rooms r ON c.id_cinema = r.id_cinema 
-    WHERE (r.state = true);
+    WHERE r.state = true AND c.state = true;
 END$$
 DELIMITER ;
 
@@ -280,7 +280,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-#call movie_pass.Shows_Add(1,330457, "2020-11-6", "21:30", true);
+#call movie_pass.Shows_Add(1,330457, "2020-11-20", "21:30", true);
 
 #DROP procedure IF EXISTS `Shows_GetTable`;
 DELIMITER $$
@@ -372,8 +372,8 @@ DELIMITER ;
 
 /* --- Insert Into --- */
 INSERT INTO Users (firstName, lastName, dni, email, password, role)
-VALUES  ('Tomy','Amoretti','38698788','tomy_kpo95@hotmail.com','1234','client'),
-		('Admin','Admin ','123','admin@moviepass.com','admin','admin'),
+VALUES  ('Admin','Admin ','123','admin@moviepass.com','admin','admin'),
+		('Tomy','Amoretti','38698788','tomy_kpo95@hotmail.com','1234','client'),
         ('Gianni','Ricciardi','40635847','gianni@moviepass.com','1234','client'),
         ('Dante','Grassi','40138417','dante@moviepass.com','1234','client');
         
@@ -387,10 +387,10 @@ VALUES (1,'Atmos','100','400', true), (1,'Sala 2D','750','400', true), (2,'Sala 
 (2,'Sala 2','1500','250', true),(3,'Sala 2D','650','250', true),(4,'Sala 2D','700','300', true);
 
 INSERT INTO Shows (Shows.id_room, Shows.id_movie, Shows.day, Shows.hour, Shows.state)
-VALUES (1,330457,"2020-11-6","21:30:00",true), (5,458897,"2020-11-6","23:00:00",true), (2,330457,"2020-11-6","17:30:00",true), (1,359724,"2020-11-6","20:00:00",true);
+VALUES (1,330457,"2020-11-6","21:30:00",true), (5,458897,"2020-11-20","23:00:00",true), (2,330457,"2020-11-21","17:30:00",true), (1,359724,"2020-11-22","20:00:00",true);
 	
 INSERT INTO Purchases (Purchases.count_tickets, Purchases.id_user, Purchases.id_show, Purchases.date_purchase, Purchases.total)
-    VALUES (8, 2, 1, "2020-11-6", 3200), (2, 4, 4, "2020-11-6", 800);
+    VALUES (8, 2, 1, "2020-11-20", 3200), (2, 4, 4, "2020-11-20", 800);
         
         
 select * from Shows;
