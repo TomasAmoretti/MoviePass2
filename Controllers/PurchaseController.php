@@ -16,7 +16,8 @@
         private $showDAO;
         private $roomDAO;
         private $homeController;
-
+        
+        // Método constructor.
         public function __construct()
         {
             $this->purchaseDAO = new PurchaseDAO();
@@ -25,30 +26,36 @@
             $this->homeController = new HomeController;
         }
 
-
+        // Función de compra entrada, genera el ticket con los datos y el precio (pueden ser uno o más tickets).
         public function Add($count_tickets, $id_user, $id_show){
            
             try{
+                $userController = new UserController();
+                $user = $userController->checkSession();
 
-                $purchase = new Purchase();
+                if($user){
+                    $purchase = new Purchase();
 
-                $show = $this->showDAO->getById($id_show);
+                    //Retorna la función de cine a través del ID.
+                    $show = $this->showDAO->GetById($id_show);
+                    $room = $this->roomDAO->GetById($show->getRoom());
 
-                $room = $this->roomDAO->getById($show->getRoom());
+                    $date = date('Y-m-d', time());
+                    $total = $count_tickets * $room->getPrice();
 
-                $date = date('Y-m-d', time());
-                $total = $count_tickets * $room->getPrice();
-
-                $purchase->setShow($show);
-                $purchase->setCountTicket($count_tickets);
-                $purchase->setIdUser($id_user);
-                $purchase->setDate($date);
-                $purchase->setTotal($total);
+                    $purchase->setShow($show);
+                    $purchase->setCountTicket($count_tickets);
+                    $purchase->setIdUser($id_user);
+                    $purchase->setDate($date);
+                    $purchase->setTotal($total);
                 
 
-                $this->purchaseDAO->Add($purchase);
-
-                $this->homeController->ShowsViewClient();
+                    $this->purchaseDAO->Add($purchase);
+                    echo '<script>alert("'.$count_tickets.' entrada(s) comprada(s)!")</script>';
+                    $this->homeController->ShowsViewClient();
+                }else{
+                    require_once(VIEWS_PATH."login.php");
+                }
 
             }    
             catch(\PDOException $e){
@@ -59,7 +66,7 @@
         }
 
 
-
+        //Obtiene el historial de compras.
         public function GetAll(){
 
             try{
