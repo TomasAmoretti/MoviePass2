@@ -116,7 +116,7 @@
             }
             catch(PDOException $e) {
 
-                $message = "ERROR!! Solo se permite agregar una Pelicula por Sala por Dia";
+                $message = $e->getMessage();
                 $this->homeController->ShowsViewAdmin($message);
             }
         }
@@ -165,7 +165,7 @@
                     if($room['cinema_name'] == $show['cinema_name']){
                         
                         if(($day == $show['day']) && ($hour != $show['hour']) && ($idMovie == $show['id_movie'])){
-                            //echo 'toy aca';
+
                             throw new PDOException("Esta pelicula ya esta cargada en este cine y en este dia!");
                         }                        
                         if($room['room_name'] == $show['room_name']){
@@ -176,9 +176,11 @@
                                 $endMovie = $this->movieDuration($show['id_movie'], $showHour);//A que hora termina la pelicula que esta en la cartelera en el mismo dia
                                 
                                 if($newMovie < $showHour){
-                                    echo "La pelicula fue cargada con exito";
+                                    echo '<script>alert("La pelicula fue cargada con exito");</script>';
+                                    //throw new PDOException("La pelicula fue cargada con exito");
                                 }elseif($hrs > $endMovie){
-                                    echo "La pelicula fue cargada con exito";
+                                    echo '<script>alert("La pelicula fue cargada con exito");</script>';
+                                    //throw new PDOException("La pelicula fue cargada con exito");
                                 }else{
                                     throw new PDOException("El horario no esta disponible!");
                                 }                                   

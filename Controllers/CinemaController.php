@@ -54,10 +54,8 @@
         public function Add($name, $adress)
         {
             try{
-                $this->validateName($name, $adress);
-
+                $this->validateName($name);
                 $this->validateAdress($adress);
-
 
                 $cinema = new Cinema();
                 $cinema->setName($name);
@@ -126,7 +124,7 @@
             }
         }
 
-        private function validateName($name, $address){
+        private function validateName($name){
 
             $cinemaList = $this->cinemaDAO->GetAll();
             $cinemaName = str_replace(' ', '', $name);
@@ -137,7 +135,7 @@
                     if(!$cinema->getState()){
                         $this->Middleware($cinema->getName(), $cinema->getAdress(), $cinema->getId());
                     }else{
-                        echo '<script>alert("El nombre del cine ya existe")</script>';
+                        //echo '<script>alert("El nombre del cine ya existe")</script>';
                         throw new PDOException("El nombre del cine ya existe");
                     }
                 }
@@ -154,7 +152,7 @@
                 $cinemaNameBDD = str_replace(' ', '', $cinema->getName());
                 $cinemaName = str_replace(' ', '', $cinema2->getName());
                 if((strcasecmp($cinemaNewName, $cinemaNameBDD) == 0) && ((strcasecmp($cinemaNewName, $cinemaName)) != 0)){
-                    echo 'El nombre del cine ya existe';
+                    //echo 'El nombre del cine ya existe';
                     throw new PDOException("El nombre del cine ya existe");
                 }
             }
@@ -171,7 +169,7 @@
                     if(!$cinema->getState()){
                         $this->Middleware($cinema->getName(), $cinema->getAdress(), $cinema->getId());
                     }else{
-                        echo '<script>alert("La direccion ingresada pertenece a otro cine ya cargado")</script>';
+                        //echo '<script>alert("La direccion ingresada pertenece a otro cine ya cargado")</script>';
                         throw new PDOException("La direccion ingresada pertenece a otro cine ya cargado");
                     }
                 }
@@ -194,11 +192,12 @@
                             foreach($showList as $show){
                                 if($show["room_name"] == $room['room_name']){
                                     $validation = true;
-                                    echo '<script>alert("No se puede borrar un cine que contiene funciones activas");</script>';
+                                    //echo '<script>alert("No se puede borrar un cine que contiene funciones activas");</script>';
+                                    throw new PDOException("No se puede borrar un cine que contiene funciones activas");
                                 }
                             }
                             if($validation){
-                                $this->roomDAO->Remove($room->getId());
+                                $this->roomDAO->Remove($room['id_room']);
                             }
                         }
                     }
