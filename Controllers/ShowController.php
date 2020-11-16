@@ -171,12 +171,12 @@ class ShowController
 
             foreach ($roomList as $room) {
 
-                if ($room['cinema_name'] == $show['cinema_name']) {
+                if (($room['cinema_name'] == $show['cinema_name']) && ($show['state'] == 1)) {
 
-                    if (($day == $show['day']) && ($hour != $show['hour']) && ($idMovie == $show['id_movie'])) {
+                    if (($day == $show['day']) && ($hour != $show['hour']) && ($idMovie == $show['id_movie']) && ($show['state'] == 1)) {
                         throw new PDOException("Esta pelicula ya esta cargada en este cine y en este dia!");
                     }
-                    if ($room['room_name'] == $show['room_name']) {
+                    if (($room['room_name'] == $show['room_name']) && ($show['state'] == 1)) {
 
                         if ($day == $show['day']) {
 
