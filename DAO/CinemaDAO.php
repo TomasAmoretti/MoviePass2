@@ -122,7 +122,7 @@
                 $parameters["id_cinema"] =  $cinema->getId();
                 $parameters["cinema_name"] =  $cinema->getName();
                 $parameters["adress"] = $cinema->getAdress();
-
+                
                 $this->connection = Connection::GetInstance();
 
                 $this->connection->ExecuteNonQuery($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion

@@ -94,6 +94,7 @@
                     $show->setIdMovie($row["id_movie"]);
                     $show->setDay($row["day"]);
                     $show->setHour($row["hour"]);
+                    $show->setState($row["state"]);
                 
                     
                     array_push($showList, $show);
@@ -201,4 +202,3 @@
     }
 
 ?>
-           
