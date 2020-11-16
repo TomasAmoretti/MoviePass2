@@ -18,7 +18,7 @@
         <div class="navbar-collapse">
             <ul class="navbar-nav">
                 <li class="nav-item nav-item-arrow-down nav-hover-show-sub">
-                    <a class="nav-link" href="#"><i class="fas fa-user-circle fa-fw"></i> <?php echo $_SESSION["loggedUser"]->getFirstName(); ?>, <?php echo $_SESSION["loggedUser"]->getLastName(); ?></a>
+                    <a class="nav-link" href="#"><i class="fas fa-user-circle fa-fw"></i> <?php //echo $_SESSION["loggedUser"]->getFirstName(); ?> <?php //echo $_SESSION["loggedUser"]->getLastName(); ?></a>
                     <div class="nav-arrow"><i class="fas fa-chevron-down"></i></div>
                     <ul class="collapse nav">
                         <li class="nav-item">
@@ -30,7 +30,7 @@
                     </ul>
                 </li>
             </ul>
-            
+
         </div>
     </nav>
   </div>
