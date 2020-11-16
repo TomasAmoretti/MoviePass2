@@ -72,7 +72,6 @@
             $roomController = new RoomController();
             $showController = new ShowController();
             $cinemaController = new CinemaController();
-            
 
             $user = $userController->checkSession();
             
