@@ -100,7 +100,7 @@
 
             }
             catch(\PDOException $e){
-
+                
                 $message = $e->getMessage();
                 $this->homeController->RoomsView($message);
             }
@@ -130,7 +130,7 @@
             
                 $this->homeController->RoomsView();
             }
-            catch(\PDOException $e){
+            catch(PDOException $e){
 
                 $message = $e->getMessage();
                 $this->homeController->RoomsView($message);
@@ -138,7 +138,6 @@
         }
 
         private function validateNameIsString($name){
-
             if(!is_string($name)){
                 throw new PDOException("El nombre ingresado no es valido");
             }
@@ -170,13 +169,11 @@
                     if($room['cinema_name'] == $show['cinema_name']){
 
                         if($show['id_room'] == $idRoom){
-            
                             throw new PDOException("La sala no se puede eliminar porque tiene funciones");
                         }
                     } 
                 }
-            }
-            
+            }            
         }
 
         private function validateChangeCinema($roomName, $idCinema){
@@ -193,7 +190,6 @@
 
                         if(($show['room_name'] == $roomName)&&($show['cinema_name'] == $cinema->getName())){
 
-                            echo "La sala no se puede cambiar de cine porque tiene funciones";
                             throw new PDOException("La sala no se puede cambiar de cine porque tiene funciones");
 
                         }
@@ -205,7 +201,6 @@
 
                         if($room['room_name'] == $roomName){
 
-                            echo "El cine ya posee una sala con ese nombre";
                             throw new PDOException("El cine ya posee una sala con ese nombre");
                         }
                     }
