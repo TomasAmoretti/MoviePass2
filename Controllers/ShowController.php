@@ -42,12 +42,12 @@ class ShowController
             $showsList = $this->showDAO->GetAll();
             $validShows = array();
             foreach($showsList as $show){
-                echo $show['state'];
-                if($show['state']){
+                if($show->getState()){
                     array_push($validShows, $show);
                 }
             }
             $message = $validMessage;
+            var_dump($showsList);
 
             return  $validShows;
         } catch (\PDOException $e) {
@@ -174,7 +174,6 @@ class ShowController
                 if ($room['cinema_name'] == $show['cinema_name']) {
 
                     if (($day == $show['day']) && ($hour != $show['hour']) && ($idMovie == $show['id_movie'])) {
-                        var_dump($show['hour']);
                         throw new PDOException("Esta pelicula ya esta cargada en este cine y en este dia!");
                     }
                     if ($room['room_name'] == $show['room_name']) {
