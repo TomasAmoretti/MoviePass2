@@ -1,76 +1,161 @@
-<?php include_once('header.php'); 
-
-if(!empty($message)){
-  echo "<script> if(confirm('".$message."'));";
-  echo"</script>";
-}
-
+<?php
+  include_once('header.php'); 
+  include_once('nav-bar-guess.php'); 
 ?>
 
+  <!-- Page Content -->
 
-<div class="container">
-
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
-
-      <div class="col-xl-10 col-lg-12 col-md-9">
-
-        <div class="card o-hidden border-0 shadow-lg my-5 rounded-0">
-          <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-              <div class="col-lg-6 movie-black">
-                <div class="p-5">
-                  <div class="text-center">
-                    <h1 class="h4 text-movie-red mb-4">Welcome Back!</h1>
-                  </div>
-
-                  <form class="user"  action="<?php echo FRONT_ROOT."User/Login"?>" method="POST">
-
-                    <div class="form-group">
-                      <input type="email" name="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
-                    </div>
-                    <div class="form-group">
-                      <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                      <!--<div class="custom-control custom-checkbox small">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <label class="custom-control-label" for="customCheck">Remember Me</label>
-                      </div>-->
-                    </div>
-
-                    <button class="btn btn-user btn-block btn-movie-static" type="submit" name="btn-login">
-                      Login
-                    </button>
-
-                  </form>
-                  <hr>
-                  
-                  <?php
-                    require_once "FacebookConfig.php";
-                    $url = $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
-                    echo "<br><a class="."loginfb btn btn-primary "." href=" . htmlspecialchars($loginUrl) . "> <i class="."fab fa-facebook-f fa-fw"."></i>  LOGIN FACEBOOOK  </a>";
-                  ?>
-   
-                
-                  <hr>
-                  <!--
-                  <div class="text-center">
-                    <a class="small" href="<?php echo FRONT_ROOT."Home/ForgotPassword"?>">Forgot Password?</a>
-                  </div>-->
-                  <div class="text-center">
-                    <a class="small" href="<?php echo FRONT_ROOT."User/Add"?>">Create an Account!</a>
-                  </div>
-                </div>
+  <section class="after-head d-flex section-text-white position-relative">
+      <div class="d-background" data-image-src="https://c1.wallpaperflare.com/preview/330/534/353/seat-chair-theatre-dark.jpg" data-parallax="scroll"></div>
+      <div class="d-background bg-black-80"></div>
+      <div class="top-block top-inner container">
+          <div class="top-block-content">
+              <h1 class="section-title">Movies list</h1>
+              <div class="page-breadcrumbs">
+                  <span>Home</span>
+                  <span class="text-theme mx-2"><i class="fas fa-chevron-right"></i></span>
+                  <span>Movies</span>
               </div>
-            </div>
+          </div>
+      </div>
+  </section>
+
+  
+<div class="container">
+        <div class="section-pannel">
+          <div class="grid row">
+              <div class="col-md-10">
+              
+                      <div class="row form-grid">
+
+                        <!-- Filter for Genre -->
+                          <div class="col-sm-6 col-lg-3">
+                              <div class="input-view-flat input-group">
+
+                                <div class="dropdown drop-category">
+                                    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Category
+                                    </button>
+
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                    <?php   foreach($genresList as $genre){ ?>
+                                        <a class="dropdown-item" href="<?php echo FRONT_ROOT."Home/MovieListByGenre?id=".$genre->getId()?>" > <?php echo $genre->getName(); ?>  </a>
+                                    <?php } ?>
+
+                                    </div>
+                                </div>
+                              </div>
+                          </div>
+
+                        
+                        <!-- Filter for Date -->
+                          <div class="col-sm-8 col-lg-4 row">
+                            <form class="input-view-flat input-group" action="<?php echo FRONT_ROOT."Home/MovieListByDate";?>" method="POST">
+          
+                                <input class="col-8 form-control lg" id="date" type="date" step="1" min="<?php echo date("Y-m-d");?>" value="<?php echo date("Y-m-d");?>" name="day"/>  
+                                <hr>
+                                <button type="submit" class="col-3 btn btn-dark"> Filtrar </button>
+                            </form>
+                          </div>
+
+                      </div>
+                 
+              </div>
+            
           </div>
         </div>
 
-      </div>
+
+    <div class="row">
+        
+
+        <?php   foreach($moviesList as $movie){ 
+                  foreach($showsList as $show){ 
+                      if($movie->getId() == $show->getIdMovie() && $show->getState()){  
+                        if($show->getState()){?>?>
+
+          <article class="movie-line-entity">
+            <div class="entity-poster" data-role="hover-wrap">
+              <div class="embed-responsive embed-responsive-poster">
+                <a href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$movie->getId();?>" >
+                  <img class="embed-responsive-item" src="https://image.tmdb.org/t/p/w185_and_h278_bestv2<?php echo $movie->getImage(); ?>" alt="" />
+                </a>
+              </div>
+            </div>
+            <div class="entity-content">
+              <h4 class="entity-title">
+                  <a class="content-link" href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$movie->getId();?>"><?php echo $movie->getTitle(); ?></a>
+              </h4>
+
+              <?php   
+                $namesGenre = array();
+                
+                foreach($genresList as $genre){
+                    for( $i=0 ; $i < count($movie->getGenres()) ; $i++ ){
+                      if($genre->getId() == $movie->getGenres()[$i]){
+                        array_push($namesGenre, $genre->getName());
+                      }
+                    }
+                    $arrayToString = implode(" - ", $namesGenre);
+                }
+            ?>
+              
+              <div class="entity-category">
+                <span class="info-rest"><?php echo $arrayToString ;?></span>               
+              </div>
+
+              <div class="entity-info">
+                  <div class="info-lines">
+                      <div class="info info-short">
+                          <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+                          <span class="info-text"><?php echo $movie->getScore(); ?></span>
+                          <span class="info-rest">/10</span>
+                      </div>
+                      <div class="info info-short">
+                          <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+                          <span class="info-text"><?php echo $movie->getDuration(); ?></span>
+                          <span class="info-rest">&nbsp;min</span>
+                      </div>
+                  </div>
+              </div>
+              <p class="text-short entity-text">
+                <?php echo $movie->getOverview(); ?>
+              </p>
+            </div>
+            <div class="entity-extra">
+              <div class="text-uppercase entity-extra-title">Showtimes</div>
+
+              <?php
+                foreach($showsList as $show){ 
+                        if($movie->getId() == $show->getIdMovie()) { ?>
+
+                    <form action="<?php echo FRONT_ROOT ?>Home/MovieDescription"  method = "post">
+                        <div class="entity-showtime">
+                            <button type="submit" name="id_show" class="btn btn-warning" value="<?php echo $show->getId(); ?>" ?>  <?php echo $show->getDay()."  ".$show->getHour() ; ?> </button>
+                        </div>
+                    </form>
+
+              <?php 
+                            
+                        }
+                    }
+            ?>
+
+
+            </div>
+          </article>
+
+          <?php 
+                            break;
+                            }
+                          }
+                        }
+                    }
+            ?>
 
     </div>
+    <!-- /.row -->
 
-  </div>
+</div>
+  <!-- /.container -->
