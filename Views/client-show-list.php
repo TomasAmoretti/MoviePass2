@@ -71,7 +71,9 @@
     <div class="row">
         
 
-        <?php   foreach($moviesList as $movie){ 
+        <?php //var_dump($moviesList);   
+        var_dump($showsList);
+        foreach($moviesList as $movie){ 
                   foreach($showsList as $show){ 
                       if($movie->getId() == $show->getIdMovie() ){  ?>
 
