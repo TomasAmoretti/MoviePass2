@@ -47,7 +47,6 @@ class ShowController
                 }
             }
             $message = $validMessage;
-            var_dump($showsList);
 
             return  $validShows;
         } catch (\PDOException $e) {
@@ -106,7 +105,7 @@ class ShowController
 
         try {
 
-            $this->validateHour($day, $hour, $id_movie);
+            $this->validateHour($day, $hour, $id_movie, $id_room);
 
 
             $show = new Show();
@@ -159,13 +158,14 @@ class ShowController
         }
     }
 
-    public function validateHour($day, $hour, $idMovie)
+    public function validateHour($day, $hour, $idMovie, $id_room)
     {
 
         $roomList = $this->roomDAO->GetAll();
         $hrs = $this->hourToDecimal($hour); //A que hora empieza la pelicula que quiero cargar
         $newMovie = $this->movieDuration($idMovie, $hrs); //A que hora termina la pelicula que quiero cargar
         $showList = $this->showDAO->GetTable();
+        
 
         foreach ($showList as $show) {
 
@@ -176,7 +176,7 @@ class ShowController
                     if (($day == $show['day']) && ($hour != $show['hour']) && ($idMovie == $show['id_movie']) && ($show['state'] == 1)) {
                         throw new PDOException("Esta pelicula ya esta cargada en este cine y en este dia!");
                     }
-                    if (($room['room_name'] == $show['room_name']) && ($show['state'] == 1)) {
+                    if (($id_room == $show['id_room']) && ($show['state'] == 1)) {
 
                         if ($day == $show['day']) {
 
