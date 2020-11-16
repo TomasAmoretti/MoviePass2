@@ -19,6 +19,18 @@
         }
  
         public function Index($message = ""){
+
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+
+            $moviesList = $movieController->GetMovies();
+            $genresList = $movieController->GetGenres();
+                
+            $roomsList = $roomController->GetAll();
+            $showsList = $showController->GetAll();
+
             require_once(VIEWS_PATH."client-show-list.php");
         }      
 
@@ -30,12 +42,14 @@
         public function CinemasView( $validMessage = null ){
 
             $userController = new UserController();
+            $roomController = new RoomController();
             $cinemaController = new CinemaController();
             
             $user = $userController->checkSession();
             if($user){
 
                 $cinemasList = $cinemaController->GetAll();
+                $roomsList = $roomController->GetAll();
                 require_once(VIEWS_PATH."admin-cinemas.php");
 
             }else{
@@ -70,7 +84,6 @@
             $roomController = new RoomController();
             $showController = new ShowController();
             $cinemaController = new CinemaController();
-            
 
             $user = $userController->checkSession();
             
@@ -135,9 +148,9 @@
 
             
                 require_once(VIEWS_PATH."client-show-list.php");
-            /*}else{
-                $userController->Logout();
-            }*/
+            //}else{
+                //$userController->Logout();
+            //}
         }
 
         //Muestra descripción de la película a través de una ID.
@@ -148,18 +161,18 @@
             $roomController = new RoomController();
             $showController = new ShowController();
 
-            $user = $userController->checkSession();
+            //$user = $userController->checkSession();
             
-            if($user){
+            //if($user){
                 $moviesList = $movieController->GetMovies();
                 $genresList = $movieController->GetGenres();
                 $roomsList = $roomController->GetAll();
                 $show = $showController->GetById($id_show);  
             
                 require_once(VIEWS_PATH."client-movie-description.php");
-            }else{
-                $userController->Logout();
-            }
+            //}else{
+                //$userController->Logout();
+            //}
         }
 
         // Muestra lista de películas a través del ID del género.
@@ -170,9 +183,9 @@
             $roomController = new RoomController();
             $showController = new ShowController();
 
-            $user = $userController->checkSession();
+            //$user = $userController->checkSession();
             
-            if($user){
+            //if($user){
 
                 $moviesList = $movieController->MovieListViewForGenre($id);
                 $genresList = $movieController->GetGenres();
@@ -181,9 +194,9 @@
                 $showsList = $showController->GetAll();  
             
                 require_once(VIEWS_PATH."client-show-list.php");
-            }else{
-                $userController->Logout();
-            }
+            //}else{
+                //$userController->Logout();
+            //}
         }
 
         // Muestra las películas de un determinado día.
@@ -194,9 +207,9 @@
             $roomController = new RoomController();
             $showController = new ShowController();
 
-            $user = $userController->checkSession();
+            //$user = $userController->checkSession();
             
-            if($user){
+            //if($user){
 
                 $moviesList = $movieController->GetMovies();
                 $genresList = $movieController->GetGenres();
@@ -205,9 +218,9 @@
                 $showsList = $showController->getMovieByDate($day);  
             
                 require_once(VIEWS_PATH."client-show-list.php");
-            }else{
-                $userController->Logout();
-            }
+            //}else{
+                //$userController->Logout();
+            //}
         }
 
         // 
