@@ -1,6 +1,6 @@
 <?php
   include_once('header.php'); 
-  include_once('nav-bar-client.php'); 
+  include_once('nav-bar-guest.php'); 
   
 ?>
 
@@ -71,7 +71,9 @@
     <div class="row">
         
 
-        <?php   foreach($moviesList as $movie){ 
+        <?php //var_dump($moviesList);   
+        var_dump($showsList);
+        foreach($moviesList as $movie){ 
                   foreach($showsList as $show){ 
                       if($movie->getId() == $show->getIdMovie() ){  ?>
 
