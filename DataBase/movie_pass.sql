@@ -209,7 +209,7 @@ DELIMITER $$
 CREATE PROCEDURE Cinemas_Update (IN id_cinema INT ,IN cinema_name VARCHAR(100), IN adress VARCHAR(100))
 BEGIN
 	UPDATE Cinemas as c
-    SET c.cinema_name = cinema_name, c.adress = adress
+    SET c.cinema_name = cinema_name, c.adress = adress, c.state = true
     WHERE (c.id_cinema = id_cinema);
 END$$
 DELIMITER ;
@@ -287,11 +287,10 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE Shows_GetTable( )
 BEGIN
-	SELECT s.id_show, c.cinema_name, r.id_room, r.room_name, id_movie, day, hour
+	SELECT s.id_show, c.cinema_name, r.id_room, r.room_name, id_movie, day, hour, s.state
     FROM Shows s
     INNER JOIN Rooms r ON s.id_room = r.id_room
-    INNER JOIN Cinemas c ON r.id_cinema = c.id_cinema
-    WHERE (s.state = true);
+    INNER JOIN Cinemas c ON r.id_cinema = c.id_cinema;
     
 END$$
 DELIMITER ;
@@ -384,7 +383,7 @@ VALUES  ('Aldrey','Sarmiento 2685', true),('Cines del Paseo', 'Diagonal Pueyrred
 		('Ambassador','Cordoba 1673',true),('Cinema', 'Catamarca 1880',true);
 
 INSERT INTO Rooms (id_cinema, room_name, capacity, price, state)
-VALUES (1,'Atmos','100','400', true), (1,'Sala 2D','750','400', true), (2,'Sala 1','800','250', true),
+VALUES (1,'Sala 2D','750','400', true), (1,'Atmos','100','400', true), (2,'Sala 1','800','250', true),
 (2,'Sala 2','1500','250', true),(3,'Sala 2D','650','250', true),(4,'Sala 2D','700','300', true);
 
 INSERT INTO Shows (Shows.id_room, Shows.id_movie, Shows.day, Shows.hour, Shows.state)
