@@ -19,39 +19,22 @@
         }
  
         public function Index($message = ""){
-<<<<<<< HEAD
-
-=======
-<<<<<<< Updated upstream
-            require_once(VIEWS_PATH."home.php");
-=======
->>>>>>> User
             $userController = new UserController();
             $movieController = new MovieController();
             $roomController = new RoomController();
             $showController = new ShowController();
-<<<<<<< HEAD
-
-=======
             
->>>>>>> User
             $moviesList = $movieController->GetMovies();
             $genresList = $movieController->GetGenres();
                 
             $roomsList = $roomController->GetAll();
             $showsList = $showController->GetAll();
-<<<<<<< HEAD
-
-            require_once(VIEWS_PATH."client-show-list.php");
-=======
             $user = $userController->checkSession();
             if($user){
                 $userController->Login($user->getUser()->getEmail(), $user->getUser()->getPassword());
             }else{
                 require_once(VIEWS_PATH."home.php");
             }
->>>>>>> Stashed changes
->>>>>>> User
         }      
 
         public function User(){
@@ -108,6 +91,7 @@
             $roomController = new RoomController();
             $showController = new ShowController();
             $cinemaController = new CinemaController();
+            
 
             $user = $userController->checkSession();
             
@@ -160,46 +144,18 @@
             $roomController = new RoomController();
             $showController = new ShowController();
 
-<<<<<<< HEAD
-            //$user = $userController->checkSession();
-=======
             $user = $userController->checkSession();
-<<<<<<< Updated upstream
->>>>>>> User
-            
-            //if($user){
-
-                $moviesList = $movieController->GetMovies();
-                $genresList = $movieController->GetGenres();
-                
-                $roomsList = $roomController->GetAll();
-                $showsList = $showController->GetAll();  
-=======
->>>>>>> Stashed changes
 
             $moviesList = $movieController->GetMovies();
             $genresList = $movieController->GetGenres();
             $roomsList = $roomController->GetAll();
             $showsList = $showController->GetAll();
             
-<<<<<<< HEAD
-                require_once(VIEWS_PATH."client-show-list.php");
-            //}else{
-                //$userController->Logout();
-            //}
-=======
-<<<<<<< Updated upstream
-                require_once(VIEWS_PATH."client-shows-list.php");
-            }else{
-                $userController->Logout();
-=======
             if($user){
                 require_once(VIEWS_PATH."client-show-list.php");
             }else{
                 require_once(VIEWS_PATH."home.php");
->>>>>>> Stashed changes
             }
->>>>>>> User
         }
 
         //Muestra descripción de la película a través de una ID.
@@ -210,41 +166,18 @@
             $roomController = new RoomController();
             $showController = new ShowController();
 
-<<<<<<< HEAD
-            //$user = $userController->checkSession();
-=======
             $user = $userController->checkSession();
-<<<<<<< Updated upstream
->>>>>>> User
-            
-            //if($user){
-                $moviesList = $movieController->GetMovies();
-                $genresList = $movieController->GetGenres();
-                $roomsList = $roomController->GetAll();
-                $show = $showController->GetById($id_show);  
-=======
 
             $moviesList = $movieController->GetMovies();
             $genresList = $movieController->GetGenres();
             $roomsList = $roomController->GetAll();
             $show = $showController->GetById($id_show);
->>>>>>> Stashed changes
             
             if($user){
                 require_once(VIEWS_PATH."client-movie-description.php");
-<<<<<<< HEAD
-            //}else{
-                //$userController->Logout();
-            //}
-=======
             }else{
-<<<<<<< Updated upstream
-                $userController->Logout();
-=======
-                require_once(VIEWS_PATH."guess-movie-description.php");
->>>>>>> Stashed changes
+                require_once(VIEWS_PATH."guest-movie-description.php");
             }
->>>>>>> User
         }
 
         // Muestra lista de películas a través del ID del género.
@@ -255,18 +188,7 @@
             $roomController = new RoomController();
             $showController = new ShowController();
 
-<<<<<<< HEAD
-            //$user = $userController->checkSession();
-            
-            //if($user){
-=======
             $user = $userController->checkSession();
-<<<<<<< Updated upstream
-            
-            if($user){
-=======
->>>>>>> Stashed changes
->>>>>>> User
 
             $moviesList = $movieController->MovieListViewForGenre($id);
             $genresList = $movieController->GetGenres();
@@ -274,24 +196,11 @@
             $roomsList = $roomController->GetAll();
             $showsList = $showController->GetAll();  
             
-<<<<<<< HEAD
-                require_once(VIEWS_PATH."client-show-list.php");
-            //}else{
-                //$userController->Logout();
-            //}
-=======
-<<<<<<< Updated upstream
-                require_once(VIEWS_PATH."client-shows-list.php");
-            }else{
-                $userController->Logout();
-=======
             if($user){
                 require_once(VIEWS_PATH."client-show-list.php");
             }else{
                 require_once(VIEWS_PATH."home.php");
->>>>>>> Stashed changes
             }
->>>>>>> User
         }
 
         // Muestra las películas de un determinado día.
@@ -302,31 +211,8 @@
             $roomController = new RoomController();
             $showController = new ShowController();
 
-            //$user = $userController->checkSession();
+            $user = $userController->checkSession();
             
-<<<<<<< HEAD
-            //if($user){
-=======
-<<<<<<< Updated upstream
-            if($user){
->>>>>>> User
-
-                $moviesList = $movieController->GetMovies();
-                $genresList = $movieController->GetGenres();
-                
-                $roomsList = $roomController->GetAll();
-                $showsList = $showController->getMovieByDate($day);  
-            
-                require_once(VIEWS_PATH."client-show-list.php");
-            //}else{
-                //$userController->Logout();
-            //}
-        }
-
-<<<<<<< HEAD
-        // 
-=======
-=======
             $moviesList = $movieController->GetMovies();
             $genresList = $movieController->GetGenres();
                 
@@ -341,8 +227,6 @@
         }
 
 
->>>>>>> Stashed changes
->>>>>>> User
         public function PurchasesList(){
 
             $userController = new UserController();
