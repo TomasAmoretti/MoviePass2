@@ -30,25 +30,32 @@
         public function Add($count_tickets, $id_user, $id_show){
            
             try{
+                $userController = new UserController();
+                $user = $userController->checkSession();
 
-                $purchase = new Purchase();
-                //Retorna la función de cine a través del ID.
-                $show = $this->showDAO->getById($id_show);
-                $room = $this->roomDAO->getById($show->getRoom());
+                if($user){
+                    $purchase = new Purchase();
 
-                $date = date('Y-m-d', time());
-                $total = $count_tickets * $room->getPrice();
+                    //Retorna la función de cine a través del ID.
+                    $show = $this->showDAO->GetById($id_show);
+                    $room = $this->roomDAO->GetById($show->getRoom());
 
-                $purchase->setShow($show);
-                $purchase->setCountTicket($count_tickets);
-                $purchase->setIdUser($id_user);
-                $purchase->setDate($date);
-                $purchase->setTotal($total);
+                    $date = date('Y-m-d', time());
+                    $total = $count_tickets * $room->getPrice();
+
+                    $purchase->setShow($show);
+                    $purchase->setCountTicket($count_tickets);
+                    $purchase->setIdUser($id_user);
+                    $purchase->setDate($date);
+                    $purchase->setTotal($total);
                 
 
-                $this->purchaseDAO->Add($purchase);
-
-                $this->homeController->ShowsViewClient();
+                    $this->purchaseDAO->Add($purchase);
+                    echo '<script>alert("'.$count_tickets.' entrada(s) comprada(s)!")</script>';
+                    $this->homeController->ShowsViewClient();
+                }else{
+                    require_once(VIEWS_PATH."login.php");
+                }
 
             }    
             catch(\PDOException $e){

@@ -5,6 +5,7 @@
     use Models\PerfilUSer as PerfilUser;
     use Models\User as User;
     use Models\Rol as Rol;
+    use \Exception as Exception;
 
     /*Alias - DAO*/
     use DAO\UserDAO as UserDAO;
@@ -26,8 +27,11 @@
             $this->homeController = new HomeController();
         }
 
+        public function Index(){
+            require_once(VIEWS_PATH."login.php");
+        }
 
-        public function Login($email, $password)
+        public function Login($email = null, $password = null)
         {
             $perfilUser = $this->userDAO->GetByEmail($email);
 
@@ -57,8 +61,8 @@
                 $perfilUser = $this->userDAO->getByEmail($_SESSION['loggedUser']->getUser()->getEmail());
                 if($perfilUser->getUser()->getPassword() == $_SESSION['loggedUser']->getUser()->getPassword())
                     return $perfilUser;
-
-              }else {
+  
+            }else {
                 return false;
             }
         }
@@ -139,7 +143,7 @@
                 $errorMje = "Error: there are no records of such user in the database";
                 $this->homeController->Index();
             }
-        }catch(\PDOExeption $ex){
+        }catch(\PDOException $ex){
             throw $ex;
         }
     }
@@ -168,8 +172,6 @@
                 $email = $array["email"];
 
                 
-                
-
                 //Password hash
                 $options = [
                     'cost' => 12,
@@ -178,8 +180,8 @@
                 $password = password_hash($unencryptedPassword, PASSWORD_BCRYPT, $options);
                 //
 
-                $userRoleDAO = new DAO_UserRole();
-                $userRoleList = $userRoleDAO->retrieveAll();
+                $userRoleDAO = new UserDAO();
+                $userRoleList = $userRoleDAO->GetAll($email);
                 if(!empty($userRoleList)) {
                     foreach($userRoleList as $userRole) {
                         if($userRole->getDescription() == "user") {
@@ -187,30 +189,24 @@
                             break;
                         }
                     }
-                    $user = new PerfilUser();
+                    $user = new User();
                     $user->setEmail($email);
                     $user->setPassword($password);
-                    $user->setFirstName($firstName);
-                    $user->setLastName($lastName);
-                    $user->setUserRole($userRole);
-                    $user->setIdFacebook($idUserFacebook);
-                    
+                    $user->setRol($userRole);
+                    $this->userDAO->Add($userRole);
 
-                    $this->userDAO->create($user);
-                    $this->prepareFBprofileImg($idUserFacebook,$user->getEmail());
-
-                    $this->loginUser($email, $unencryptedPassword);
+                    $this->login($email, $unencryptedPassword);
                     //A login is made to, with the email and password, load the user from the database and bring the ID
                 }
                 else {
                     $message = "There was a problem creating the user. Try again";
-                    $this->homeController->signup($message, 0);
+                    $this->homeController->Login($message);
                 } 
             }
             catch(PDOException $e)
             {
                 $message = "A database error ocurred";
-                $this->homeController->signup($message, 0);
+                $this->homeController->Login($message);
             }            
         }
 

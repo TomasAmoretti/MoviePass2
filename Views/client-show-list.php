@@ -75,22 +75,24 @@
         var_dump($showsList);
         foreach($moviesList as $movie){ 
                   foreach($showsList as $show){ 
-                      if($movie->getId() == $show->getIdMovie() ){  ?>
+                      if($movie->getId() == $show->getIdMovie()){  
+                        if($show->getState()){?>
 
           <article class="movie-line-entity">
             <div class="entity-poster" data-role="hover-wrap">
               <div class="embed-responsive embed-responsive-poster">
-                <a href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$movie->getId();?>" >
+                <a href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$show->getId();?>" >
                   <img class="embed-responsive-item" src="https://image.tmdb.org/t/p/w185_and_h278_bestv2<?php echo $movie->getImage(); ?>" alt="" />
                 </a>
               </div>
             </div>
             <div class="entity-content">
               <h4 class="entity-title">
-                  <a class="content-link" href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$movie->getId();?>"><?php echo $movie->getTitle(); ?></a>
+                  <a class="content-link" href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$show->getId();?>"><?php echo $movie->getTitle(); ?></a>
               </h4>
 
               <?php   
+<<<<<<< Updated upstream
                 $namesGenre = array();
                 
                 foreach($genresList as $genre){
@@ -159,4 +161,11 @@
     <!-- /.row -->
 
 </div>
+<<<<<<< HEAD
   <!-- /.container -->
+=======
+  <!-- /.container -->
+=======
+                $namesGenre = array();
+>>>>>>> Stashed changes
+>>>>>>> User

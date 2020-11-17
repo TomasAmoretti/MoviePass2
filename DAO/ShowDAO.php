@@ -59,6 +59,7 @@
                     $show->setIdMovie($row["id_movie"]);
                     $show->setDay($row["day"]);
                     $show->setHour($row["hour"]);
+                    $show->setState($row['state']);
                     
                     array_push($showList, $show);
                 }
@@ -94,7 +95,7 @@
                     $show->setIdMovie($row["id_movie"]);
                     $show->setDay($row["day"]);
                     $show->setHour($row["hour"]);
-                    $show->setState($row["state"]);
+                    $show->setState($row['state']);
                 
                     
                     array_push($showList, $show);
@@ -149,7 +150,7 @@
         {
             try
             {
-               
+                
                 $query = "CALL Shows_GetById(?)";//Se guarda la accion que se hara en la BDD
 
                 $parameters["id"] =  $id;
@@ -157,7 +158,7 @@
                 $this->connection = Connection::GetInstance();
 
                 $result = $this->connection->Execute($query, $parameters, QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
-
+                
                 foreach($result as $row)
                 {
                     $show = new Show();
