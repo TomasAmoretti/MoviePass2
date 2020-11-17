@@ -90,7 +90,6 @@
               </h4>
 
               <?php   
-<<<<<<< Updated upstream
                 $namesGenre = array();
                 
                 foreach($genresList as $genre){
@@ -151,6 +150,7 @@
           <?php 
                             break;
                             }
+                          }
                         }
                     }
             ?>
@@ -160,6 +160,3 @@
 
 </div>
   <!-- /.container -->
-=======
-                $namesGenre = array();
->>>>>>> Stashed changes
