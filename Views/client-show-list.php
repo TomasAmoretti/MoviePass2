@@ -1,6 +1,6 @@
 <?php
   include_once('header.php'); 
-  include_once('nav-bar-guest.php'); 
+  include_once('nav-bar-client.php'); 
   
 ?>
 
@@ -71,9 +71,7 @@
     <div class="row">
         
 
-        <?php //var_dump($moviesList);   
-        var_dump($showsList);
-        foreach($moviesList as $movie){ 
+        <?php   foreach($moviesList as $movie){ 
                   foreach($showsList as $show){ 
                       if($movie->getId() == $show->getIdMovie()){  
                         if($show->getState()){?>
@@ -92,7 +90,6 @@
               </h4>
 
               <?php   
-<<<<<<< Updated upstream
                 $namesGenre = array();
                 
                 foreach($genresList as $genre){
@@ -153,6 +150,7 @@
           <?php 
                             break;
                             }
+                          }
                         }
                     }
             ?>
@@ -161,11 +159,4 @@
     <!-- /.row -->
 
 </div>
-<<<<<<< HEAD
   <!-- /.container -->
-=======
-  <!-- /.container -->
-=======
-                $namesGenre = array();
->>>>>>> Stashed changes
->>>>>>> User
