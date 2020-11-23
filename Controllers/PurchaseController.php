@@ -7,6 +7,8 @@
     use Models\Show as Show;
     use DAO\RoomDAO as RoomDAO;
     use Models\Room as Room;
+    use Models\Cinema as Cinema;
+    use DAO\CinemaDAO as CinemaDAO;
 
     use Controllers\HomeController as HomeController;
 use PDOException;
@@ -50,11 +52,9 @@ class PurchaseController
                     $purchase->setIdUser($id_user);
                     $purchase->setDate($date);
                     $purchase->setTotal($total);
-                
 
                     $this->purchaseDAO->Add($purchase);
-                    echo '<script>alert("'.$count_tickets.' entrada(s) comprada(s)!")</script>';
-                    $this->homeController->ShowsViewClient();
+                    $this->homeController->PurchaseConfirm($purchase);
                 }else{
                     require_once(VIEWS_PATH."login.php");
                 }
@@ -67,6 +67,27 @@ class PurchaseController
             }
         }
 
+        public function Confirm($id_purchase, $id_show, $qr){
+            
+            try{
+                $userController = new UserController();
+                $user = $userController->checkSession();
+                if($user){
+                    $this->purchaseDAO->AddTicket($id_purchase, $id_show, $qr);
+                    $purchase2 = $this->purchaseDAO->GetPurchaseById($id_purchase);
+                    $this->purchaseDAO->SendEmail($purchase2, $qr);
+                    $this->homeController->PurchaseAdd();
+                }else{
+                    require_once(VIEWS_PATH."login.php");
+                }
+
+            }    
+            catch(\PDOException $e){
+        
+                $message = $e->getMessage();
+                $this->homeController->ShowsViewClient($message);
+            }
+        }
 
         //Obtiene el historial de compras.
         public function GetAll(){

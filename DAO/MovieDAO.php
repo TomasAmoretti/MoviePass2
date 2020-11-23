@@ -87,7 +87,6 @@ class MovieDAO {
 
     //Obtiene un genero a partir de una "id"
     public function getGenreForId($id_buscado){
-        $generoARetornar;
         for($i=0; $i < count($this->genresList) ; $i++)
         {
             $id = $this->genresList[$i]->getId();
