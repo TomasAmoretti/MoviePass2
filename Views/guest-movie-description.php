@@ -1,6 +1,10 @@
 <?php
   include_once('header.php'); 
+
   include_once('nav-bar-guess.php'); 
+
+  include_once('nav-bar-guest.php'); 
+
   
 ?>
   <!-- Page Content -->
