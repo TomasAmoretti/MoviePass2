@@ -1,11 +1,6 @@
 <?php
-<<<<<<< HEAD
-include_once('header.php');
-include_once('nav-bar-guest.php');
-=======
   include_once('header.php'); 
   include_once('nav-bar-guest.php'); 
->>>>>>> User
 ?>
 
 <!-- Page Content -->

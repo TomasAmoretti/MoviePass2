@@ -38,18 +38,11 @@
     <script src="<?php echo JS_PATH ;?>home.min.js"></script>
 
     <!-- Page level plugins -->
-<<<<<<< Updated upstream
+
     <script src="<?php echo VENDOR_PATH ;?>/datatables/jquery.dataTables.min.js"></script>
-<<<<<<< HEAD
-    <script src="<?php echo VENDOR_PATH ;?>datatables/dataTables.bootstrap4.min.js"></script>
-=======
     <script src="<?php echo VENDOR_PATH ;?>/datatables/dataTables.bootstrap4.min.js"></script>
-=======
     <script src="<?php echo VENDOR_PATH ;?>datatables/jquery.dataTables.min.js"></script>
     <script src="<?php echo VENDOR_PATH ;?>datatables/dataTables.bootstrap4.min.js"></script>
->>>>>>> Stashed changes
->>>>>>> User
-
     <script src="<?php echo VENDOR_PATH ;?>parallax/parallax.min.js"></script>
     <script src="<?php echo VENDOR_PATH ;?>parallax/parallax.js"></script>
     <!-- Waypoints -->
