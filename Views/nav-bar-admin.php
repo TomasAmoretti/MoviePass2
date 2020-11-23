@@ -57,17 +57,15 @@
           <span>Functions</span></a>
       </li>
 
-   
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-
       <!-- Nav Item - Tables -->
       <li class="nav-item">
         <a class="nav-link" href="<?php echo FRONT_ROOT."Home/InfoViewAdmin"?>">
         <i class="fas fa-dollar-sign"></i>
-          <span> Info </span></a>
+          <span> Purchases </span></a>
       </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
 
 
       <!-- Sidebar Toggler (Sidebar) -->
