@@ -52,8 +52,6 @@ class PurchaseDAO {
 
             $result = $this->connection->Execute($query, array(), QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
 
-            //var_dump($result);
-
             
             return $result;
         }

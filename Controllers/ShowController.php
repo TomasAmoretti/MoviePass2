@@ -46,6 +46,7 @@ class ShowController
                     array_push($validShows, $show);
                 }
             }
+            $this->validateHourAndDayShow2($validShows);
             $message = $validMessage;
 
             return  $validShows;
@@ -163,9 +164,6 @@ class ShowController
 
             $roomList = $this->roomDAO->GetAll();
             $hrs = $this->hourToDecimal($hour); //A que hora empieza la pelicula que quiero cargar
-
-            var_dump($hrs);
-
             $newMovie = $this->movieDuration($idMovie, $hrs); //A que hora termina la pelicula que quiero cargar
             $showList = $this->showDAO->GetTable();
 
@@ -245,13 +243,35 @@ class ShowController
         }
     }
 
+    private function validateHourAndDayShow2($showsList)
+    {
+        date_default_timezone_set("America/Argentina/Buenos_Aires"); //setea a la zona horaria correspondiente (por defecto viene en GMT)
+        $date = getdate();
+        $time = time() + (7 * 24 * 60 * 60);
+        $hourLocale = (($date['hours'] * 60) + ($date['minutes']));
+
+        foreach ($showsList as $show) {
+            
+            if ($show->getDay() == date('Y-m-d')) {
+                $hourShow = $this->hourToDecimal($show->getHour());
+                if ($hourShow < $hourLocale) {
+                    if ($show->getState()) {
+                        $this->Remove($show->getId());
+                    }
+                }
+            }if(($show->getDay() < date('Y-m-d')) && ($show->getState())){
+                $this->Remove($show->getId());
+            }
+        }
+    }
+
     private function horarioLaboral($idMovie, $hour){
 
-        $startHour = 900;//comienzo del horario de proyeccion
-        $endHour = 1439;//fin del horario de proyeccion
+        $startHour = 900;// Apertura del cine
+        $endHour = 1439;// Cierre del cine
         $startShowHour = $this->hourToDecimal($hour);//comienzo de la pelicula
         $endShowHour = $this->movieDuration($idMovie, $startShowHour);//fin de la pelicula
-        if(($startShowHour >= $startHour) && ($endShowHour <= $endHour)){
+        if(($startShowHour >= $startHour) && ($startShowHour < $endHour)){
             return true;
         }else{
             return false;
