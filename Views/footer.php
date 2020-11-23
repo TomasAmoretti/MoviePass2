@@ -1,6 +1,5 @@
-    
-    <!-- Footer -->
-    <footer class="sticky-footer bg-black">
+<!-- Footer -->
+<footer class="sticky-footer bg-black">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
           <span>Copyright &copy; UTN - 2020</span>
@@ -39,18 +38,22 @@
     <script src="<?php echo JS_PATH ;?>home.min.js"></script>
 
     <!-- Page level plugins -->
+<<<<<<< Updated upstream
     <script src="<?php echo VENDOR_PATH ;?>/datatables/jquery.dataTables.min.js"></script>
     <script src="<?php echo VENDOR_PATH ;?>/datatables/dataTables.bootstrap4.min.js"></script>
+=======
+    <script src="<?php echo VENDOR_PATH ;?>datatables/jquery.dataTables.min.js"></script>
+    <script src="<?php echo VENDOR_PATH ;?>datatables/dataTables.bootstrap4.min.js"></script>
+>>>>>>> Stashed changes
 
     <script src="<?php echo VENDOR_PATH ;?>parallax.js/parallax.min.js"></script>
     <!-- Waypoints -->
-    <script src="<?php echo VENDOR_PATH ;?>/waypoints/jquery.waypoints.min.js"></script>
+    <script src="<?php echo VENDOR_PATH ;?>waypoints/jquery.waypoints.min.js"></script>
     <!-- Slick carousel -->
-    <script src="<?php echo VENDOR_PATH ;?>/slick/slick.min.js"></script>
+    <script src="<?php echo VENDOR_PATH ;?>slick/slick.min.js"></script>
     <!-- Magnific Popup -->
-    <script src="<?php echo VENDOR_PATH ;?>/magnific-popup/jquery.magnific-popup.min.js"></script>
-    <!-- Inits product scripts -->
-    <script src="<?php echo JS_PATH ;?>/theme.js"></script>
+    <script src="<?php echo VENDOR_PATH ;?>magnific-popup/jquery.magnific-popup.min.js"></script>
+
 
     
     <!-- Page level custom scripts -->
