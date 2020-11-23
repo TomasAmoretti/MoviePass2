@@ -163,10 +163,9 @@ class ShowController
 
             $roomList = $this->roomDAO->GetAll();
             $hrs = $this->hourToDecimal($hour); //A que hora empieza la pelicula que quiero cargar
-<<<<<<< Updated upstream
+
             var_dump($hrs);
-=======
->>>>>>> Stashed changes
+
             $newMovie = $this->movieDuration($idMovie, $hrs); //A que hora termina la pelicula que quiero cargar
             $showList = $this->showDAO->GetTable();
 

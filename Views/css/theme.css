@@ -2838,6 +2838,9 @@ a.paginator-item:hover {
   padding: 1.25rem;
   background-color: #fff;
 }
+.movie-line-entity {
+  width: 100%;
+}
 .movie-line-entity .entity-extra {
   width: 100%;
   border-style: dotted;
@@ -3057,7 +3060,7 @@ a.paginator-item:hover {
 }
 @media (min-width: 1200px) {
   .movie-info-entity .entity-poster {
-    width: 25%;
+    width: 28%;
   }
 }
 /*------------------------------------------------------------------
