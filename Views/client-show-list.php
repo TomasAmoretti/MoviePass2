@@ -73,19 +73,20 @@
 
         <?php   foreach($moviesList as $movie){ 
                   foreach($showsList as $show){ 
-                      if($movie->getId() == $show->getIdMovie() ){  ?>
+                      if($movie->getId() == $show->getIdMovie()){  
+                        if($show->getState()){?>
 
           <article class="movie-line-entity">
             <div class="entity-poster" data-role="hover-wrap">
               <div class="embed-responsive embed-responsive-poster">
-                <a href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$movie->getId();?>" >
+                <a href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$show->getId();?>" >
                   <img class="embed-responsive-item" src="https://image.tmdb.org/t/p/w185_and_h278_bestv2<?php echo $movie->getImage(); ?>" alt="" />
                 </a>
               </div>
             </div>
             <div class="entity-content">
               <h4 class="entity-title">
-                  <a class="content-link" href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$movie->getId();?>"><?php echo $movie->getTitle(); ?></a>
+                  <a class="content-link" href="<?php echo FRONT_ROOT."Home/MovieDescription?id_movie=".$show->getId();?>"><?php echo $movie->getTitle(); ?></a>
               </h4>
 
               <?php   
@@ -149,6 +150,7 @@
           <?php 
                             break;
                             }
+                          }
                         }
                     }
             ?>
@@ -157,4 +159,48 @@
     <!-- /.row -->
 
 </div>
-  <!-- /.container -->
+<!-- /.container -->
+
+<!-- slider -->
+<div class="movies-carrousel">
+  <?php
+  for ($i = 0; $i < 10; $i++) {
+  ?>
+    <ul class="movie-item">
+      <li><img class="embed-responsive-item" src="https://image.tmdb.org/t/p/w185_and_h278_bestv2<?php echo $moviesList[$i]->getImage(); ?>" alt="" /></li>
+      <li class="movie-title-list"><a class="content-link" href="#"><?php echo $moviesList[$i]->getTitle(); ?></a></li>
+      <?php
+      $namesGenre2 = array();
+
+      foreach ($genresList as $genre) {
+        for ($y = 0; $y < count($moviesList[$i]->getGenres()); $y++) {
+          if ($genre->getId() == $moviesList[$i]->getGenres()[$y]) {
+            $cadena = str_replace(' ', '', $genre->getName());
+            array_push($namesGenre2, $cadena);
+          }
+        }
+      }
+      ?>
+      <li class="genre-list-slick">
+        <?php foreach ($namesGenre2 as $genre) { ?>
+          <span class="info-rest genre-list2"><?php echo $genre; ?></span>
+        <?php } ?>
+      </li>
+      <li class="entity-info">
+        <div class="info info-short">
+          <span class="text-theme info-icon"><i class="fas fa-star"></i></span>
+          <span class="info-text"><?php echo $moviesList[$i]->getScore(); ?></span>
+          <span class="info-rest">/10</span>
+        </div>
+        <div class="info info-short">
+          <span class="text-theme info-icon"><i class="fas fa-clock"></i></span>
+          <span class="info-text"><?php echo $moviesList[$i]->getDuration(); ?></span>
+          <span class="info-rest">&nbsp;min</span>
+        </div>
+      </li>
+    </ul>
+  <?php
+  }
+  ?>
+</div>
+<!-- /.slider -->

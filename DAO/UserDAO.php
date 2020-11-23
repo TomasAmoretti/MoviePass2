@@ -129,7 +129,42 @@
             }
         }
 
+        public function GetById($id){
+
+            try
+            {
+                $rol = null;
+                $user = null;
+
+                $query = "CALL Users_GetAll()";//Se guarda la accion que se hara en la BDD
+
+                $this->connection = Connection::GetInstance();
+
+                $results = $this->connection->Execute($query, array(), QueryType::StoredProcedure);//Realiza la llamada a la funcion y se guarda lo que devuelve la funcion de la BDD
+
+                foreach($results as $row)
+                {
+                    if($row["id_user"] == $id){
+
+                        $user = new User();
+                        $rol = new Rol();
+
+                        $rol->setDescription($row["role"]);
+                    
+                        $user->setEmail($row["email"]);
+                        $user->setPassword($row["password"]);
+                        $user->setRol($rol);
+
+                    }
+                }
+                return $user;
+            }
+            catch(Exception $ex)
+            {
+                throw $ex;
+            }
+        }
+
        
 
     }
-?>

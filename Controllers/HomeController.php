@@ -19,8 +19,27 @@
         }
  
         public function Index($message = ""){
-            require_once(VIEWS_PATH."home.php");
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            
+            $moviesList = $movieController->GetMovies();
+            $genresList = $movieController->GetGenres();
+                
+            $roomsList = $roomController->GetAll();
+            $showsList = $showController->GetAll();
+            $user = $userController->checkSession();
+            if($user){
+                $userController->Login($user->getUser()->getEmail(), $user->getUser()->getPassword());
+            }else{
+                require_once(VIEWS_PATH."home.php");
+            }
         }      
+
+        public function User(){
+            require_once(VIEWS_PATH."login.php");
+        }
 
         public function Register(){
             require_once(VIEWS_PATH."home-register.php");
@@ -72,6 +91,7 @@
             $roomController = new RoomController();
             $showController = new ShowController();
             $cinemaController = new CinemaController();
+            
 
             $user = $userController->checkSession();
             
@@ -125,19 +145,16 @@
             $showController = new ShowController();
 
             $user = $userController->checkSession();
+
+            $moviesList = $movieController->GetMovies();
+            $genresList = $movieController->GetGenres();
+            $roomsList = $roomController->GetAll();
+            $showsList = $showController->GetAll();
             
             if($user){
-
-                $moviesList = $movieController->GetMovies();
-                $genresList = $movieController->GetGenres();
-                
-                $roomsList = $roomController->GetAll();
-                $showsList = $showController->GetAll();  
-
-            
                 require_once(VIEWS_PATH."client-show-list.php");
             }else{
-                $userController->Logout();
+                require_once(VIEWS_PATH."home.php");
             }
         }
 
@@ -150,16 +167,15 @@
             $showController = new ShowController();
 
             $user = $userController->checkSession();
-            
+
+            $moviesList = $movieController->GetMovies();
+            $genresList = $movieController->GetGenres();
+            $roomsList = $roomController->GetAll();
+            $show = $showController->GetById($id_show);
             if($user){
-                $moviesList = $movieController->GetMovies();
-                $genresList = $movieController->GetGenres();
-                $roomsList = $roomController->GetAll();
-                $show = $showController->GetById($id_show);  
-            
                 require_once(VIEWS_PATH."client-movie-description.php");
             }else{
-                $userController->Logout();
+                require_once(VIEWS_PATH."guest-movie-description.php");
             }
         }
 
@@ -172,18 +188,17 @@
             $showController = new ShowController();
 
             $user = $userController->checkSession();
+
+            $moviesList = $movieController->MovieListViewForGenre($id);
+            $genresList = $movieController->GetGenres();
+                
+            $roomsList = $roomController->GetAll();
+            $showsList = $showController->GetAll();  
             
             if($user){
-
-                $moviesList = $movieController->MovieListViewForGenre($id);
-                $genresList = $movieController->GetGenres();
-                
-                $roomsList = $roomController->GetAll();
-                $showsList = $showController->GetAll();  
-            
                 require_once(VIEWS_PATH."client-show-list.php");
             }else{
-                $userController->Logout();
+                require_once(VIEWS_PATH."home.php");
             }
         }
 
@@ -197,27 +212,61 @@
 
             $user = $userController->checkSession();
             
-            if($user){
+            $moviesList = $movieController->GetMovies();
+            $genresList = $movieController->GetGenres();
+                
+            $roomsList = $roomController->GetAll();
+            $showsList = $showController->getMovieByDate($day);
 
+            if($user){
+                require_once(VIEWS_PATH."client-show-list.php");
+            }else{
+                require_once(VIEWS_PATH."home.php");
+            }
+        }
+
+        public function PurchaseConfirm($purchase){
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            $purchaseController = new PurchaseController();
+
+            $user = $userController->checkSession();
+            
+            if($user){
+                $userPurchase = $purchase;
                 $moviesList = $movieController->GetMovies();
                 $genresList = $movieController->GetGenres();
-                
                 $roomsList = $roomController->GetAll();
-                $showsList = $showController->getMovieByDate($day);  
+                $showsList = $showController->GetAll();  
+                $purchaseList = $purchaseController->GetAll();
             
-                require_once(VIEWS_PATH."client-show-list.php");
+                require_once(VIEWS_PATH."purchase-view.php");
             }else{
                 $userController->Logout();
             }
         }
 
-        // 
+        public function PurchaseAdd(){
+            $userController = new UserController();
+
+            $user = $userController->checkSession();
+            
+            if($user){
+                require_once(VIEWS_PATH."purchase-add.php");
+            }else{
+                $userController->Logout();
+            }
+        }
+
         public function PurchasesList(){
 
             $userController = new UserController();
             $movieController = new MovieController();
             $roomController = new RoomController();
             $showController = new ShowController();
+            $purchaseController = new PurchaseController();
 
             $user = $userController->checkSession();
             
@@ -228,15 +277,13 @@
                 
                 $roomsList = $roomController->GetAll();
                 $showsList = $showController->GetAll();  
+                $purchaseList = $purchaseController->GetAll();
             
                 require_once(VIEWS_PATH."client-show-list.php");
             }else{
                 $userController->Logout();
             }
         }
-
-
-
     
     }
 
