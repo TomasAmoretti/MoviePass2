@@ -10,6 +10,8 @@ class Cinema{
     private $adress; //string
     private $room;
     private $state; //boolean;
+    private $openingHours;
+    private $closingHours;
 
     //Getters
     public function getId(){
@@ -27,6 +29,12 @@ class Cinema{
     public function getState(){
         return $this->state;
     }
+    public function getOpeningHours(){
+        return $this->openingHours;
+    }
+    public function getClosingHours(){
+        return $this->closingHours;
+    }
 
     //Setters
     public function setId($id){
@@ -43,6 +51,12 @@ class Cinema{
     }
     public function setState($state){
         $this->state = $state;
+    }
+    public function setOpeningHours($openingHours){
+        $this->openingHours = $openingHours;
+    }
+    public function setClosingHours($closingHours){
+        $this->closingHours = $closingHours;
     }
 }
 
