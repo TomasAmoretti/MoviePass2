@@ -233,6 +233,7 @@
             $movieController = new MovieController();
             $roomController = new RoomController();
             $showController = new ShowController();
+            $purchaseController = new PurchaseController();
 
             $user = $userController->checkSession();
             
@@ -243,6 +244,7 @@
                 
                 $roomsList = $roomController->GetAll();
                 $showsList = $showController->GetAll();  
+                $purchaseList = $purchaseController->GetAll();
             
                 require_once(VIEWS_PATH."client-show-list.php");
             }else{
