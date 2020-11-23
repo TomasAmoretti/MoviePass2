@@ -9656,12 +9656,6 @@ a:focus {
   animation-timing-function: opacity cubic-bezier(0, 1, 0.4, 1);
 }
 
-. {
-  background-color: #4e73df;
-  background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
-  background-size: cover;
-}
-
 .bg-gradient-secondary {
   background-color: #858796;
   background-image: linear-gradient(180deg, #858796 10%, #60616f 100%);
@@ -10574,19 +10568,16 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
   background-position: center;
   background-size: cover;
 }
 
 .bg-register-image {
-  background: url("https://source.unsplash.com/Mv9hjnEUHR4/600x800");
   background-position: center;
   background-size: cover;
 }
 
 .bg-password-image {
-  background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
   background-position: center;
   background-size: cover;
 }
@@ -10989,4 +10980,38 @@ body.sidebar-toggled footer.sticky-footer {
 
 button object {
   z-index: 0;
+}
+
+.movie-item {
+  max-width: 205px;
+  background: white;
+  display: grid;
+  list-style: none;
+  align-items: center;
+  padding: 10px;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  margin: 5px;
+}
+
+.movies-carrousel {
+  margin-top: 30px !important;
+  width: 64%;
+  margin: auto;
+}
+
+.movie-title-list {
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movie-line-entity {
+  width: 100%;
+}
+
+.fas.fa-user-circle.fa-fw {
+    font-size: 35px;
 }
