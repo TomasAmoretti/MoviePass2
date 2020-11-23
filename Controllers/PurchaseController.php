@@ -9,8 +9,9 @@
     use Models\Room as Room;
 
     use Controllers\HomeController as HomeController;
+use PDOException;
 
-    class PurchaseController
+class PurchaseController
     {
         private $purchaseDAO;
         private $showDAO;
@@ -41,7 +42,8 @@
                     $room = $this->roomDAO->GetById($show->getRoom());
 
                     $date = date('Y-m-d', time());
-                    $total = $count_tickets * $room->getPrice();
+
+                    $total = $this->discount($count_tickets, $id_show);
 
                     $purchase->setShow($show);
                     $purchase->setCountTicket($count_tickets);
@@ -79,6 +81,42 @@
                 $message = $e->getMessage();
                 $this->homeController->InfoViewAdmin($message);
                 return null;
+            }
+        }
+
+    private function discount($count_tickets, $id_show)
+    {
+        $purchaseList = $this->purchaseDAO->GetAll();
+        $show = $this->showDAO->GetById($id_show);
+        $roomShow = $show->getRoom();
+        $room = $this->roomDAO->GetById($roomShow);
+
+        $dayShow = $show->getDay();
+        $day = $this->knowDay($dayShow);
+
+        if ((strcasecmp($day, 'Martes') == 0) || (strcasecmp($day, 'Miercoles') == 0)) {
+
+            if ($count_tickets >= 2) {
+                $discount = $room->getPrice() - ($room->getPrice() * 0.25);
+                return $totalDiscount = ($discount * $count_tickets);
+            } else {
+
+                return $total = ($count_tickets * $room->getPrice());
+            }
+        } else {
+
+            return $total = ($count_tickets * $room->getPrice());
+        }
+    }
+
+        private function knowDay($day) {
+            if($day != null){    
+                $dias = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+                $fecha = $dias[date('N', strtotime($day))];
+                return $fecha;
+            }
+            else{
+                throw new PDOException("El dia a buscar ingresado no es valido");
             }
         }
     }
