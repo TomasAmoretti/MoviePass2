@@ -1,113 +1,144 @@
-<?php
-namespace DAO;
 
-use Models\Movie as Movie;
-use Models\Genre as Genre;
+  
+  <!-- Page Wrapper -->
+  <div id="wrapper">
 
-class MovieDAO {
-    
-    private $moviesList = array();
-    private $genresList = array();
-    
-    //Trae todas las peliculas
-    public function getMovies(){
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="CinemasView">
+        <div class="sidebar-brand-icon rotate-n-15">
+          <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3"> Admin </div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard 
+      <li class="nav-item active">
+        <a class="nav-link" href="#">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Dashboard</span></a>
+      </li>-->
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Admin
+      </div>
+
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <i class="fas fa-door-open"></i>
+          <span>Cinemas and Rooms</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">ABM:</h6>
+            <a class="collapse-item" href="<?php echo FRONT_ROOT."Home/CinemasView"?>">Cinemas</a>
+            <a class="collapse-item" href="<?php echo FRONT_ROOT."Home/RoomsView"?>">Rooms</a>
+          </div>
+        </div>
+      </li>
+
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo FRONT_ROOT."Home/ShowsViewAdmin"?>">
+          <i class="fas fa-film "></i>
+          <span>Functions</span></a>
+      </li>
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo FRONT_ROOT."Home/InfoViewAdmin"?>">
+        <i class="fas fa-dollar-sign"></i>
+          <span> Purchases </span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
         
-        $this->retrieveMovies();
 
-        return $this->moviesList;
-    }
-    
-    //Trae todos los generos de las peliculas
-    public function getGenres(){
-        $this->retrieveGenres();
-        return $this->genresList;
-    }
+            <div class="topbar-divider d-none d-sm-block"></div>
 
-    //Obtiene las peliculas a partir del "id" de un genero de la pelicula
-    public function getMoviesByGenre($id_genre){
-        $this->retrieveMovies();
-        $newMoviesList = [];
-        foreach ($this->moviesList as $movie){
-            foreach($movie->getGenres() as $genre){
-                if($id_genre == $genre){
-                    array_push($newMoviesList, $movie);
-                }
-            }
-        }
-        $returnedValue = count($newMoviesList) ? $newMoviesList : $this->moviesList;
-        return $returnedValue;
-    }
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION["loggedUser"]->getFirstName(); ?>, <?php echo $_SESSION["loggedUser"]->getLastName(); ?></span>  
+                <i class="fas fa-user-circle fa-fw"></i>
+                </a>
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                </a>
 
-    //Obtiene la duracion de una pelicula a travez de la API
-    public function retrieveDurationOneMovieFromApi($id) {
-        $json = file_get_contents("https://api.themoviedb.org/3/movie/" . $id . "?api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
-        $APIDataArray = json_decode($json, true);
-        $runtime = $APIDataArray["runtime"];
-        if($runtime == null) {
-            $runtime = 120;
-        }
-        return $runtime;
-    }
+                <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                    </a>
+                </div>
+            </li>
 
-    //Obtiene las peliculas a traves de la API
-    private function retrieveMovies(){
+          </ul>
 
-        $json = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?page=1&language=en&api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
-        
-        $arrayToDecode = ($json) ? json_decode($json, true) : array();
-        $arrayMovies = $arrayToDecode['results'];
-
-        foreach($arrayMovies as $valuesArray)
-        {
-            $duration = $this->retrieveDurationOneMovieFromApi($valuesArray['id']) ;
-            $movie = new Movie($valuesArray['id'], $valuesArray['title'], $valuesArray['poster_path'], $valuesArray["original_language"],$duration, $valuesArray['overview'], $valuesArray['vote_average'], $valuesArray["genre_ids"]);
-
-            array_push($this->moviesList, $movie);
-        }
-        
-    }
-
-    //Obtiene los generos de las peliculas a traves de la API
-    public function retrieveGenres(){
-                
-        $json = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
-        $arrayToDecode = ($json) ? json_decode($json, true) : array();
-        $arrayGeneros = array_shift($arrayToDecode);
-
-        foreach($arrayGeneros as $valuesArray)
-            {
-                $genre = new Genre();
-
-                $genre->setId($valuesArray["id"]);
-                $genre->setName($valuesArray["name"]);
-
-                array_push($this->genresList, $genre);
-            }
-    }
-
-    //Obtiene un genero a partir de una "id"
-    public function getGenreForId($id_buscado){
-        for($i=0; $i < count($this->genresList) ; $i++)
-        {
-            $id = $this->genresList[$i]->getId();
-            if($id == $id_buscado)
-            {
-                $generoARetornar = $this->genresList[$i];
-            }
-        }
-        return $generoARetornar;
-    }
-
-    private function remplaceIdGenre(){
-        foreach($this->moviesList as $movie){
-            $genres = array_values(array_filter($this->genresList, function ($genre) use ($movie) {
-                return array_reduce($movie->getGenreIds(), function ($equal, $id) use ($genre) {
-                    return $equal || $id === $genre->getId();
-                });
-            }, ARRAY_FILTER_USE_BOTH));
-            $movie-> setGenreIds($genres);
-        }
-    }
-    
-}
-?>
+        </nav>
+        <!-- End of Topbar -->
