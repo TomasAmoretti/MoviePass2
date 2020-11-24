@@ -37,7 +37,7 @@ class PurchaseController
                 $user = $userController->checkSession();
 
                 if($user){
-                    if($this->ticketsavailable($count_tickets, $id_show)){
+                    //if($this->ticketsavailable($count_tickets, $id_show)){
                         $purchase = new Purchase();
 
                         //Retorna la función de cine a través del ID.
@@ -56,7 +56,7 @@ class PurchaseController
 
                         $this->purchaseDAO->Add($purchase);
                         $this->homeController->PurchaseConfirm($purchase);
-                    }
+                    //}
                 }else{
                     require_once(VIEWS_PATH."login.php");
                 }
@@ -142,7 +142,7 @@ class PurchaseController
             }
         }
         
-        private function ticketsavailable($count_tickets, $id_show){
+        /*private function ticketsavailable($count_tickets, $id_show){
 
             $purchseList = $this->purchaseDAO->GetAll();
             $showList = $this->showDAO->GetTable();
@@ -159,12 +159,7 @@ class PurchaseController
                         }
                     }
                 }
-
-                
-
-
             }
-        }
-    
+        }*/
     }   
 ?>
