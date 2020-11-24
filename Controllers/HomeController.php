@@ -1,144 +1,313 @@
+<?php
+    namespace Controllers;
 
-  
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+    /*Controllers*/
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    use Controllers\UserController as UserController;
+    use Controllers\CinemaController as CinemaController;
+    use Controllers\RoomController as RoomController;
+    use Controllers\MovieController as MovieController;
+    use Controllers\GenreController as GenreController;
+    use Controllers\ShowController as ShowController;
+    use Controllers\PurchaseController as PurchaseController;
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="CinemasView">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3"> Admin </div>
-      </a>
+    class HomeController
+    {
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
+        public function __construct(){
 
-      <!-- Nav Item - Dashboard 
-      <li class="nav-item active">
-        <a class="nav-link" href="#">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>-->
+        }
+ 
+        public function Index($message = ""){
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            
+            $moviesList = $movieController->GetMovies();
+            $genresList = $movieController->GetGenres();
+                
+            $roomsList = $roomController->GetAll();
+            $showsList = $showController->GetAll();
+            $user = $userController->checkSession();
+            if($user){
+                $userController->Login($user->getUser()->getEmail(), $user->getUser()->getPassword());
+            }else{
+                require_once(VIEWS_PATH."home.php");
+            }
+        }      
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+        public function User(){
+            require_once(VIEWS_PATH."login.php");
+        }
 
+        public function Register(){
+            require_once(VIEWS_PATH."home-register.php");
+        }
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Admin
-      </div>
+        public function Profile(){
 
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            $purchaseController = new PurchaseController();
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-        <i class="fas fa-door-open"></i>
-          <span>Cinemas and Rooms</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">ABM:</h6>
-            <a class="collapse-item" href="<?php echo FRONT_ROOT."Home/CinemasView"?>">Cinemas</a>
-            <a class="collapse-item" href="<?php echo FRONT_ROOT."Home/RoomsView"?>">Rooms</a>
-          </div>
-        </div>
-      </li>
+            $user = $userController->checkSession();
+            
+            if($user){
+                $moviesList = $movieController->GetMovies();
+                $genresList = $movieController->GetGenres();
+                $roomsList = $roomController->GetAll();
+                $showsList = $showController->GetAll();  
+                $purchaseList = $purchaseController->GetAll();
+                require_once(VIEWS_PATH."client-profile.php");
 
+            }else{
+                $userController->Logout();
+            }
+        }
 
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT."Home/ShowsViewAdmin"?>">
-          <i class="fas fa-film "></i>
-          <span>Functions</span></a>
-      </li>
+        //Valida la sesión y muestra una lista de cines al Admin.
+        public function CinemasView( $validMessage = null ){
 
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT."Home/InfoViewAdmin"?>">
-        <i class="fas fa-dollar-sign"></i>
-          <span> Purchases </span></a>
-      </li>
+            $userController = new UserController();
+            $roomController = new RoomController();
+            $cinemaController = new CinemaController();
+            
+            $user = $userController->checkSession();
+            if($user){
 
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+                $cinemasList = $cinemaController->GetAll();
+                $roomsList = $roomController->GetAll();
+                require_once(VIEWS_PATH."admin-cinemas.php");
 
+            }else{
+                $userController->Logout();
+            }
+        }
 
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
+        //Muestra la lista de los cines junto a sus salas.
+        public function RoomsView( $validMessage = null ){
 
-    </ul>
-    <!-- End of Sidebar -->
+            $userController = new UserController();
+            $roomController = new RoomController();
+            $cinemaController = new CinemaController();
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-      <!-- Main Content -->
-      <div id="content">
-
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-          <!-- Sidebar Toggle (Topbar) -->
-          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-          </button>
-
-
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-
-            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
-                  <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li>
-
+            $user = $userController->checkSession();
+            
         
+            if($user){
+                $roomsList = $roomController->GetAll();
+                $cinemasList = $cinemaController->GetAll();
+                require_once(VIEWS_PATH."admin-rooms.php");
+            }else{
+                $userController->Logout();
+            }
+        }
 
-            <div class="topbar-divider d-none d-sm-block"></div>
+        //Muestra una lista completa de las películas y las salas donde se encuentran.
+        public function ShowsViewAdmin( $validMessage = null ){
 
-            <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION["loggedUser"]->getFirstName(); ?>, <?php echo $_SESSION["loggedUser"]->getLastName(); ?></span>  
-                <i class="fas fa-user-circle fa-fw"></i>
-                </a>
-                <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Profile
-                </a>
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            $cinemaController = new CinemaController();
+            
 
-                <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Logout
-                    </a>
-                </div>
-            </li>
+            $user = $userController->checkSession();
+            
+            if($user){
+                $moviesList = $movieController->GetMovies();
+                $genresList = $movieController->GetGenres();
+                $roomsList = $roomController->GetAll();
+                $showsList = $showController->GetTable();
 
-          </ul>
+                require_once(VIEWS_PATH."admin-shows.php");
+            }else{
+                $userController->Logout();
+            }
+        }
 
-        </nav>
-        <!-- End of Topbar -->
+        // Muestra al admin 
+        public function InfoViewAdmin( $validMessage = null ){
+
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            $cinemaController = new CinemaController();
+            $purchaseController = new PurchaseController();
+
+            $user = $userController->checkSession();
+            
+            if($user){
+
+                $moviesList = $movieController->GetMovies();
+                
+                $roomList = $roomController->GetAll();
+
+                $showsList = $showController->GetTable();
+
+                $purchasesList = $purchaseController->GetAll();
+
+                require_once(VIEWS_PATH."admin-table-info.php");
+            }else{
+                $userController->Logout();
+            }
+        }
+
+
+        //Muestra al cliente películas junto a sus géneros y horarios.
+        public function ShowsViewClient(){
+
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+
+            $user = $userController->checkSession();
+
+            $moviesList = $movieController->GetMovies();
+            $genresList = $movieController->GetGenres();
+            $roomsList = $roomController->GetAll();
+            $showsList = $showController->GetAll();
+            
+            if($user){
+                require_once(VIEWS_PATH."client-show-list.php");
+            }else{
+                require_once(VIEWS_PATH."home.php");
+            }
+        }
+
+        //Muestra descripción de la película a través de una ID.
+        public function MovieDescription($id_show){
+
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+
+            $user = $userController->checkSession();
+
+            $moviesList = $movieController->GetMovies();
+            $genresList = $movieController->GetGenres();
+            $roomsList = $roomController->GetAll();
+            $show = $showController->GetById($id_show);
+            if($user){
+                require_once(VIEWS_PATH."client-movie-description.php");
+            }else{
+                require_once(VIEWS_PATH."guest-movie-description.php");
+            }
+        }
+
+        // Muestra lista de películas a través del ID del género.
+        public function MovieListByGenre($id){
+
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+
+            $user = $userController->checkSession();
+
+            $moviesList = $movieController->MovieListViewForGenre($id);
+            $genresList = $movieController->GetGenres();
+                
+            $roomsList = $roomController->GetAll();
+            $showsList = $showController->GetAll();  
+            
+            if($user){
+                require_once(VIEWS_PATH."client-show-list.php");
+            }else{
+                require_once(VIEWS_PATH."home.php");
+            }
+        }
+
+        // Muestra las películas de un determinado día.
+        public function MovieListByDate($day){
+
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+
+            $user = $userController->checkSession();
+            
+            $moviesList = $movieController->GetMovies();
+            $genresList = $movieController->GetGenres();
+                
+            $roomsList = $roomController->GetAll();
+            $showsList = $showController->getMovieByDate($day);
+
+            if($user){
+                require_once(VIEWS_PATH."client-show-list.php");
+            }else{
+                require_once(VIEWS_PATH."home.php");
+            }
+        }
+
+        public function PurchaseConfirm($purchase){
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            $purchaseController = new PurchaseController();
+
+            $user = $userController->checkSession();
+            
+            if($user){
+                $userPurchase = $purchase;
+                $moviesList = $movieController->GetMovies();
+                $genresList = $movieController->GetGenres();
+                $roomsList = $roomController->GetAll();
+                $showsList = $showController->GetAll();  
+                $purchaseList = $purchaseController->GetAll();
+            
+                require_once(VIEWS_PATH."purchase-view.php");
+            }else{
+                $userController->Logout();
+            }
+        }
+
+        public function PurchaseAdd(){
+            $userController = new UserController();
+
+            $user = $userController->checkSession();
+            
+            if($user){
+                require_once(VIEWS_PATH."purchase-add.php");
+            }else{
+                require_once(VIEWS_PATH."home.php");
+            }
+        }
+
+        public function PurchasesList(){
+
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            $purchaseController = new PurchaseController();
+
+            $user = $userController->checkSession();
+            
+            if($user){
+
+                $moviesList = $movieController->GetMovies();
+                $genresList = $movieController->GetGenres();
+                
+                $roomsList = $roomController->GetAll();
+                $showsList = $showController->GetAll();  
+                $purchaseList = $purchaseController->GetAll();
+            
+                require_once(VIEWS_PATH."client-show-list.php");
+            }else{
+                $userController->Logout();
+            }
+        }
+    
+    }
+
+?>
