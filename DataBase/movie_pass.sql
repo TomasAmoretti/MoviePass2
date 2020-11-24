@@ -98,7 +98,6 @@ CREATE TABLE IF NOT EXISTS Shows(
 CREATE TABLE IF NOT EXISTS Purchases(
 
     id_purchase INT auto_increment,
-
     id_user INT ,
     id_show INT,
     count_tickets INT ,
@@ -116,16 +115,11 @@ CREATE TABLE IF NOT EXISTS Tickets(
     id_ticket INT auto_increment,
     id_purchase INT NOT NULL,
     id_show INT NOT NULL,
-    numbre_ticket INT NOT NULL,
     qr mediumblob,
 
     CONSTRAINT pk_id_ticket PRIMARY KEY (id_ticket),
     CONSTRAINT fk_id_purchase FOREIGN KEY (id_purchase) REFERENCES Purchases(id_purchase),
     CONSTRAINT fk_id_show FOREIGN KEY (id_show) REFERENCES Shows(id_show));
-
-
-
-
 
 /* ------- Stored Procedure ------- */
 
@@ -351,7 +345,7 @@ DELIMITER ;
 DELIMITER $$
 CREATE PROCEDURE Purchases_GetAll( )
 BEGIN
-    SELECT c.cinema_name , r.room_name, r.capacity, s.day, s.hour, sum(count_tickets) as count_tickets, p.id_user, p.id_show, p.date_purchase, sum(p.total) as total
+    SELECT p.id_purchase, c.cinema_name , r.room_name, r.capacity, s.day, s.hour, sum(count_tickets) as count_tickets, p.id_user, p.id_show, p.date_purchase, sum(p.total) as total
     FROM Purchases p 
     INNER JOIN Shows s ON p.id_show = s.id_show
     INNER JOIN Rooms r ON s.id_room = r.id_room
@@ -361,13 +355,42 @@ BEGIN
 END$$
 DELIMITER ;
 
+#DROP procedure IF EXISTS `Purchases_GetById`;
+DELIMITER $$
+CREATE PROCEDURE Purchases_GetById(IN id INT)
+BEGIN
+    SELECT p.id_purchase, p.id_user ,p.id_show, p.count_tickets, p.discount, p.date_purchase, p.total
+	FROM Purchases p
+    WHERE (p.id_purchase = id) ;
+END$$
+DELIMITER ;
+
 #call movie_pass.Purchases_GetAll();
 
 /* ----- Tickets ----- */
+#DROP procedure IF EXISTS `Ticket_Add`;
+DELIMITER $$
+CREATE PROCEDURE Ticket_Add ( IN id_purchase INT , IN id_show INT , IN qr mediumblob )
+BEGIN
+    INSERT INTO Tickets (Tickets.id_purchase, Tickets.id_show, Tickets.qr)
+    VALUES (id_purchase, id_show, qr);
+END$$
+DELIMITER ;
 
-
-
-
+#DROP procedure IF EXISTS `Ticket_GetAll`;
+DELIMITER $$
+CREATE PROCEDURE Ticket_GetAll( )
+BEGIN
+    SELECT t.id_ticket as 'Ticket id',c.cinema_name as 'Cinema', r.room_name 'Room Name', r.capacity 'Capacity', s.day 'Day', s.hour 'Hour', sum(count_tickets) as 'Tickets', p.id_user 'User Id', p.id_show 'Purchase Id', p.date_purchase 'Purchase Date', sum(p.total) as 'Total', t.qr as "QR"
+    FROM Tickets t 
+    INNER JOIN Purchases p ON t.id_purchase
+    INNER JOIN Shows s ON p.id_show = s.id_show
+    INNER JOIN Rooms r ON s.id_room = r.id_room
+    INNER JOIN Cinemas c ON r.id_cinema = c.id_cinema 
+	
+    GROUP BY(p.id_show);
+END$$
+DELIMITER ;
 
 
 /* --- Insert Into --- */
@@ -398,3 +421,9 @@ select * from Cinemas;
 select * from Rooms;
 select * from Users;
 select * from Purchases;
+select * from Tickets;
+
+
+
+
+
