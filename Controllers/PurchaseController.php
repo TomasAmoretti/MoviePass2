@@ -37,7 +37,7 @@ class PurchaseController
                 $user = $userController->checkSession();
 
                 if($user){
-                    //if($this->ticketsavailable($count_tickets, $id_show)){
+                    if($this->ticketsavailable($count_tickets, $id_show)){
                         $purchase = new Purchase();
 
                         //Retorna la función de cine a través del ID.
@@ -56,7 +56,7 @@ class PurchaseController
 
                         $this->purchaseDAO->Add($purchase);
                         $this->homeController->PurchaseConfirm($purchase);
-                    //}
+                    }
                 }else{
                     require_once(VIEWS_PATH."login.php");
                 }
@@ -142,24 +142,23 @@ class PurchaseController
             }
         }
         
-        /*private function ticketsavailable($count_tickets, $id_show){
+        private function ticketsavailable($count_tickets, $id_show){
 
             $purchseList = $this->purchaseDAO->GetAll();
             $showList = $this->showDAO->GetTable();
             foreach($purchseList as $purchase){
-                foreach($showList as $show){
 
-                    if($purchase['id_show'] == $show['id_show']){
+                    if($purchase['id_show'] == $id_show){
                         if($purchase['capacity'] >= $count_tickets){
-
-                            return true;
+                            $cont = 1;
+                            $remainder = $purchase["capacity"] - $purchase["count_tickets"];
+                            if($remainder >=1)
+                                return true;
                         }else{
-    
                             throw new PDOException("La cantidad de tickets es superior a la cantidad disponible");
                         }
                     }
-                }
             }
-        }*/
+        }
     }   
 ?>

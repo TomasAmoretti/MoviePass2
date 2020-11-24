@@ -109,8 +109,8 @@
                                         }
                                         ?>
                                 </li>
-
-                                <li>
+                                <?php if($remainder >= 0){ ?>
+                                <li> 
                                     <form  action="<?php echo FRONT_ROOT ?>Purchase/Add" method="POST">
 
                                         <div class="form-group">
@@ -126,6 +126,11 @@
                                     
                                     </form>
                                 </li>
+                                <?php }else{ ?>
+                                    <div class="form-group">
+                                            <label style="color:red;">El cine se quedo sin entradas para la funcion</label>
+                                    </div>
+                                <?php } ?>
 
                             </ul>
                         </div>
