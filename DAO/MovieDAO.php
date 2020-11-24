@@ -1,144 +1,219 @@
+<?php
+    namespace Controllers;
 
+    /*Alias - Models*/
+    use Models\PerfilUSer as PerfilUser;
+    use Models\User as User;
+    use Models\Rol as Rol;
+    use \Exception as Exception;
+
+    /*Alias - DAO*/
+    use DAO\UserDAO as UserDAO;
+
+    /*Alias - Controllers*/
+    use Controllers\HomeController as HomeController;
+
+    /*Alias - Exceptions*/
+    use \PDOException as PDOException;
+
+    class UserController
+    {
+        private $userDAO;
+        private $homeController;
+
+        public function __construct()
+        {
+            $this->userDAO = new UserDAO();
+            $this->homeController = new HomeController();
+        }
+
+        public function Index(){
+            require_once(VIEWS_PATH."login.php");
+        }
+
+        public function Login($email = null, $password = null)
+        {
+            $perfilUser = $this->userDAO->GetByEmail($email);
+
+            if(($perfilUser != null) && ($perfilUser->getUser()->getPassword() === $password))
+            {
+                if($perfilUser->getUser()->getRol()->getDescription() === "admin"){
+                    $_SESSION["loggedUser"] = $perfilUser;
+                    $this->homeController->CinemasView();
+                }
+                else if($perfilUser->getUser()->getRol()->getDescription() === "client"){
+                    $_SESSION["loggedUser"] = $perfilUser;
+                    $this->homeController->ShowsViewClient();
+                }
+            }
+            else{
+                $this->homeController->Index("Usuario y/o Contraseña incorrectos");
+            }
+        }
+
+        public function Profile(){
+            $this->homeController->Profile();
+        }
+
+        public function checkSession()
+        {
+            if (session_status() == PHP_SESSION_NONE)
+                session_start();
+
+            if(isset($_SESSION['loggedUser'])) {
+
+                $perfilUser = $this->userDAO->getByEmail($_SESSION['loggedUser']->getUser()->getEmail());
+                if($perfilUser->getUser()->getPassword() == $_SESSION['loggedUser']->getUser()->getPassword())
+                    return $perfilUser;
   
-  <!-- Page Wrapper -->
-  <div id="wrapper">
+            }else {
+                return false;
+            }
+        }
+        
+        public function Logout()
+        {
+            if(session_status() == PHP_SESSION_NONE)
+                session_start();
+                session_destroy();
+            $this->homeController->Index();
+        }
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        public function Add($firstName, $lastName, $dni, $email, $password)
+        {
+            $perfilUser = new PerfilUser();
+            $user = new User();
+            $rol = new Rol();
+            
+            $rol->setDescription('client');
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="CinemasView">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3"> Admin </div>
-      </a>
+            $user->setEmail($email);
+            $user->setPassword($password);
+            $user->setRol($rol);
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
+            $perfilUser->setFirstName($firstName);
+            $perfilUser->setLastName($lastName);
+            $perfilUser->setDni($dni);
+            $perfilUser->setUser($user);
 
-      <!-- Nav Item - Dashboard 
-      <li class="nav-item active">
-        <a class="nav-link" href="#">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>-->
+            $this->userDAO->Add($perfilUser);
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Admin
-      </div>
-
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-        <i class="fas fa-door-open"></i>
-          <span>Cinemas and Rooms</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">ABM:</h6>
-            <a class="collapse-item" href="<?php echo FRONT_ROOT."Home/CinemasView"?>">Cinemas</a>
-            <a class="collapse-item" href="<?php echo FRONT_ROOT."Home/RoomsView"?>">Rooms</a>
-          </div>
-        </div>
-      </li>
+            $this->homeController->ShowsViewClient();
+        }
 
 
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT."Home/ShowsViewAdmin"?>">
-          <i class="fas fa-film "></i>
-          <span>Functions</span></a>
-      </li>
+        /*User is saved in session*/
+	    public function setSession($user) {
+            if (session_status() == PHP_SESSION_NONE)
+                session_start();
+		
+	        $_SESSION['user'] = $user;
+	
+        }
+        
+        public function UserExist($email){
+            try{
+                if($this->userDAO->GetByEmail($email)){
+                    return true;
+                }else
+                {
+                    return false;
+                }
+            }catch(\PDOException $ex){
+                throw $ex;
+            }
+        }
 
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT."Home/InfoViewAdmin"?>">
-        <i class="fas fa-dollar-sign"></i>
-          <span> Purchases </span></a>
-      </li>
+        /*Methods for Facebook API*/
 
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
+      
+    public function loginWithFacebook($fbUserData) {
+        
+        try{
+            if($this->UserExist($fbUserData['email']))//comprueba que exista el usuario
+            {
+                $user = $this->userDAO->GetByEmail($fbUserData['email']);
+                
+                if($user)
+                {
+                    
+                    $_SESSION["loggedUser"] = $user;
+                    $this->homeController->ShowsViewClient();
+                }else{
+                    $errorMje = "Error: we Can´t access to your facebook acount";
+                    $this->homeController->Index();
+                }
+            }else{
+                $errorMje = "Error: there are no records of such user in the database";
+                $this->homeController->Index();
+            }
+        }catch(\PDOException $ex){
+            throw $ex;
+        }
+    }
 
+        private function verifyIfTheUserEmailBeUsing($accountsList, $userEmail) {
+            $result=false;
 
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
+            foreach($accountsList as $value)
+            {
+                if($value->getEmail()==$userEmail)
+                {
+                    $result=true;
+                    break;
+                }       
+            }
+            return $result;
+        }
 
-    </ul>
-    <!-- End of Sidebar -->
+        private function createUserUsingFacebook($array) {
+            $email = $array["email"];
+            try
+            {
+                $idUserFacebook=$array["id"];
+                $firstName = $array["firstName"];
+                $lastName = $array["lastName"];
+                $email = $array["email"];
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+                
+                //Password hash
+                $options = [
+                    'cost' => 12,
+                ];
+                $unencryptedPassword = $array["password"];;
+                $password = password_hash($unencryptedPassword, PASSWORD_BCRYPT, $options);
+                //
 
-      <!-- Main Content -->
-      <div id="content">
+                $userRoleDAO = new UserDAO();
+                $userRoleList = $userRoleDAO->GetAll($email);
+                if(!empty($userRoleList)) {
+                    foreach($userRoleList as $userRole) {
+                        if($userRole->getDescription() == "user") {
+                            $userRole = $userRole;
+                            break;
+                        }
+                    }
+                    $user = new User();
+                    $user->setEmail($email);
+                    $user->setPassword($password);
+                    $user->setRol($userRole);
+                    $this->userDAO->Add($userRole);
 
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-          <!-- Sidebar Toggle (Topbar) -->
-          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-          </button>
-
-
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-
-            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
-                  <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li>
+                    $this->login($email, $unencryptedPassword);
+                    //A login is made to, with the email and password, load the user from the database and bring the ID
+                }
+                else {
+                    $message = "There was a problem creating the user. Try again";
+                    $this->homeController->Login($message);
+                } 
+            }
+            catch(PDOException $e)
+            {
+                $message = "A database error ocurred";
+                $this->homeController->Login($message);
+            }            
+        }
 
         
-
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-            <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION["loggedUser"]->getFirstName(); ?>, <?php echo $_SESSION["loggedUser"]->getLastName(); ?></span>  
-                <i class="fas fa-user-circle fa-fw"></i>
-                </a>
-                <!-- Dropdown - User Information -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Profile
-                </a>
-
-                <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Logout
-                    </a>
-                </div>
-            </li>
-
-          </ul>
-
-        </nav>
-        <!-- End of Topbar -->
+    }
+?>
