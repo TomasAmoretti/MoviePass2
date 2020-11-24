@@ -165,6 +165,7 @@
             $movieController = new MovieController();
             $roomController = new RoomController();
             $showController = new ShowController();
+            $purchaseController =new PurchaseController();
 
             $user = $userController->checkSession();
 
@@ -172,6 +173,7 @@
             $genresList = $movieController->GetGenres();
             $roomsList = $roomController->GetAll();
             $show = $showController->GetById($id_show);
+            $purchasesList = $purchaseController->GetAll();
             if($user){
                 require_once(VIEWS_PATH."client-movie-description.php");
             }else{

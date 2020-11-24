@@ -1,7 +1,7 @@
 <?php
   include_once('header.php'); 
   include_once('nav-bar-guest.php'); 
-  
+  $cont = 0;
 ?>
   <!-- Page Content -->
 
@@ -86,6 +86,23 @@
                                 </li>
 
                                 <li>
+                                    <span class="entity-list-title">Tickets available:</span><?php
+                                    foreach($purchasesList as $purchase){ 
+                                            if($show->getId() == $purchase["id_show"]){ 
+                                                $cont = 1;
+                                                echo $remainder = $purchase["capacity"] - $purchase["count_tickets"];
+                                            }
+                                    }if($cont == 0){
+                                        foreach($roomsList as $room){
+                                            if($room["id_room"] == $show->getRoom()){
+                                                echo $room['capacity'];
+                                            }
+                                        }
+                                    }                                    
+                                    ?>
+                                </li>
+
+                                <li>
                                     <span class="entity-list-title">Price:</span><?php 
                                         foreach($roomsList as $room){
                                             if($room["id_room"] == $show->getRoom()){
@@ -100,7 +117,7 @@
 
                                         <div class="form-group">
                                             <label>Cantidad de Entradas</label>
-                                            <input  type="number" min="1" class="form-control col-sm-5" name="count_tickets" required/>
+                                            <input  type="number" min="1" class="form-control col-sm-5" name="count_tickets" required hidden/>
                                         </div>
                                         <?php 
                                         if($user){

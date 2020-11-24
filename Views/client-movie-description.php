@@ -1,7 +1,7 @@
 <?php
   include_once('header.php'); 
   include_once('nav-bar-client.php'); 
-  
+  $cont = 0;
 ?>
   <!-- Page Content -->
 
@@ -84,7 +84,22 @@
                                 <li>
                                     <span class="entity-list-title">Room:</span><?php echo $show->getRoom(); ?>
                                 </li>
-
+                                <li>
+                                    <span class="entity-list-title">Tickets available:</span><?php
+                                    foreach($purchasesList as $purchase){ 
+                                            if($show->getId() == $purchase["id_show"]){ 
+                                                $cont = 1;
+                                                echo $remainder = $purchase["capacity"] - $purchase["count_tickets"];
+                                            }
+                                    }if($cont == 0){
+                                        foreach($roomsList as $room){
+                                            if($room["id_room"] == $show->getRoom()){
+                                                echo $room['capacity'];
+                                            }
+                                        }
+                                    }                                    
+                                    ?>
+                                </li>
                                 <li>
                                     <span class="entity-list-title">Price:</span><?php 
                                         foreach($roomsList as $room){
