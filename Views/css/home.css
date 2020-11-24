@@ -11015,3 +11015,43 @@ button object {
 .fas.fa-user-circle.fa-fw {
     font-size: 35px;
 }
+
+.container.ticket-container {
+    background: white;
+    margin-top: 100px;
+    max-width: 35%;
+    border-radius: 31px;
+    padding: 60px;
+    text-align: center;
+}
+
+.ticket-container .info.info-short {
+  font-size: 18px;
+}
+
+.entity-content.qr-ticket-content {
+  display: flex;
+  justify-content: center;
+}
+
+img.qr-ticket {
+  display: flex;
+}
+
+h2.entity-title.green {
+    color: #1fad1f;
+    font-size: 28px;
+}
+
+a.back-home {
+  background: #ff8a00;
+  color: white;
+  border-radius: 5px;
+  padding: 8px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.section-line.purchase-add {
+  margin-bottom: 30px;
+}

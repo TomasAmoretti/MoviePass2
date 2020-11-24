@@ -7,6 +7,8 @@
     use Models\Show as Show;
     use DAO\RoomDAO as RoomDAO;
     use Models\Room as Room;
+    use Models\Cinema as Cinema;
+    use DAO\CinemaDAO as CinemaDAO;
 
     use Controllers\HomeController as HomeController;
 use PDOException;
@@ -35,26 +37,26 @@ class PurchaseController
                 $user = $userController->checkSession();
 
                 if($user){
-                    $purchase = new Purchase();
+                    if($this->ticketsavailable($count_tickets, $id_show)){
+                        $purchase = new Purchase();
 
-                    //Retorna la función de cine a través del ID.
-                    $show = $this->showDAO->GetById($id_show);
-                    $room = $this->roomDAO->GetById($show->getRoom());
+                        //Retorna la función de cine a través del ID.
+                        $show = $this->showDAO->GetById($id_show);
+                        $room = $this->roomDAO->GetById($show->getRoom());
 
-                    $date = date('Y-m-d', time());
+                        $date = date('Y-m-d', time());
 
-                    $total = $this->discount($count_tickets, $id_show);
+                        $total = $this->discount($count_tickets, $id_show);
 
-                    $purchase->setShow($show);
-                    $purchase->setCountTicket($count_tickets);
-                    $purchase->setIdUser($id_user);
-                    $purchase->setDate($date);
-                    $purchase->setTotal($total);
-                
+                        $purchase->setShow($show);
+                        $purchase->setCountTicket($count_tickets);
+                        $purchase->setIdUser($id_user);
+                        $purchase->setDate($date);
+                        $purchase->setTotal($total);
 
-                    $this->purchaseDAO->Add($purchase);
-                    echo '<script>alert("'.$count_tickets.' entrada(s) comprada(s)!")</script>';
-                    $this->homeController->ShowsViewClient();
+                        $this->purchaseDAO->Add($purchase);
+                        $this->homeController->PurchaseConfirm($purchase);
+                    }
                 }else{
                     require_once(VIEWS_PATH."login.php");
                 }
@@ -67,6 +69,27 @@ class PurchaseController
             }
         }
 
+        public function Confirm($id_purchase, $id_show, $qr){
+            
+            try{
+                $userController = new UserController();
+                $user = $userController->checkSession();
+                if($user){
+                    $this->purchaseDAO->AddTicket($id_purchase, $id_show, $qr);
+                    $purchase2 = $this->purchaseDAO->GetPurchaseById($id_purchase);
+                    $this->purchaseDAO->SendEmail($purchase2, $qr);
+                    $this->homeController->PurchaseAdd();
+                }else{
+                    require_once(VIEWS_PATH."login.php");
+                }
+
+            }    
+            catch(\PDOException $e){
+        
+                $message = $e->getMessage();
+                $this->homeController->ShowsViewClient($message);
+            }
+        }
 
         //Obtiene el historial de compras.
         public function GetAll(){
@@ -84,30 +107,29 @@ class PurchaseController
             }
         }
 
-    private function discount($count_tickets, $id_show)
-    {
-        $purchaseList = $this->purchaseDAO->GetAll();
-        $show = $this->showDAO->GetById($id_show);
-        $roomShow = $show->getRoom();
-        $room = $this->roomDAO->GetById($roomShow);
+        private function discount($count_tickets, $id_show)
+        {
+            $show = $this->showDAO->GetById($id_show);
+            $roomShow = $show->getRoom();
+            $room = $this->roomDAO->GetById($roomShow);
 
-        $dayShow = $show->getDay();
-        $day = $this->knowDay($dayShow);
+            $dayShow = $show->getDay();
+            $day = $this->knowDay($dayShow);
 
-        if ((strcasecmp($day, 'Martes') == 0) || (strcasecmp($day, 'Miercoles') == 0)) {
+            if ((strcasecmp($day, 'Martes') == 0) || (strcasecmp($day, 'Miercoles') == 0)) {
 
-            if ($count_tickets >= 2) {
-                $discount = $room->getPrice() - ($room->getPrice() * 0.25);
-                return $totalDiscount = ($discount * $count_tickets);
+                if ($count_tickets >= 2) {
+                    $discount = $room->getPrice() - ($room->getPrice() * 0.25);
+                    return $totalDiscount = ($discount * $count_tickets);
+                } else {
+
+                    return $total = ($count_tickets * $room->getPrice());
+                }
             } else {
 
                 return $total = ($count_tickets * $room->getPrice());
             }
-        } else {
-
-            return $total = ($count_tickets * $room->getPrice());
         }
-    }
 
         private function knowDay($day) {
             if($day != null){    
@@ -119,5 +141,30 @@ class PurchaseController
                 throw new PDOException("El dia a buscar ingresado no es valido");
             }
         }
-    }
+        
+        private function ticketsavailable($count_tickets, $id_show){
+
+            $purchseList = $this->purchaseDAO->GetAll();
+            $showList = $this->showDAO->GetTable();
+            foreach($purchseList as $purchase){
+                foreach($showList as $show){
+
+                    if($purchase['id_show'] == $show['id_show']){
+                        if($purchase['capacity'] >= $count_tickets){
+
+                            return true;
+                        }else{
+    
+                            throw new PDOException("La cantidad de tickets es superior a la cantidad disponible");
+                        }
+                    }
+                }
+
+                
+
+
+            }
+        }
+    
+    }   
 ?>

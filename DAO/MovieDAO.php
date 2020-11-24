@@ -55,6 +55,7 @@ class MovieDAO {
         $json = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?page=1&language=en&api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
         
         $arrayToDecode = ($json) ? json_decode($json, true) : array();
+        $aaux = array_shift($arrayToDecode);
         $arrayMovies = array_shift($arrayToDecode);
 
         foreach($arrayMovies as $valuesArray)
@@ -87,7 +88,6 @@ class MovieDAO {
 
     //Obtiene un genero a partir de una "id"
     public function getGenreForId($id_buscado){
-        $generoARetornar;
         for($i=0; $i < count($this->genresList) ; $i++)
         {
             $id = $this->genresList[$i]->getId();

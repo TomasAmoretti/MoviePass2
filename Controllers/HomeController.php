@@ -172,7 +172,6 @@
             $genresList = $movieController->GetGenres();
             $roomsList = $roomController->GetAll();
             $show = $showController->GetById($id_show);
-            
             if($user){
                 require_once(VIEWS_PATH."client-movie-description.php");
             }else{
@@ -226,6 +225,40 @@
             }
         }
 
+        public function PurchaseConfirm($purchase){
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            $purchaseController = new PurchaseController();
+
+            $user = $userController->checkSession();
+            
+            if($user){
+                $userPurchase = $purchase;
+                $moviesList = $movieController->GetMovies();
+                $genresList = $movieController->GetGenres();
+                $roomsList = $roomController->GetAll();
+                $showsList = $showController->GetAll();  
+                $purchaseList = $purchaseController->GetAll();
+            
+                require_once(VIEWS_PATH."purchase-view.php");
+            }else{
+                $userController->Logout();
+            }
+        }
+
+        public function PurchaseAdd(){
+            $userController = new UserController();
+
+            $user = $userController->checkSession();
+            
+            if($user){
+                require_once(VIEWS_PATH."purchase-add.php");
+            }else{
+                require_once(VIEWS_PATH."home.php");
+            }
+        }
 
         public function PurchasesList(){
 
