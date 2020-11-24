@@ -1,219 +1,113 @@
 <?php
-    namespace Controllers;
+namespace DAO;
 
-    /*Alias - Models*/
-    use Models\PerfilUSer as PerfilUser;
-    use Models\User as User;
-    use Models\Rol as Rol;
-    use \Exception as Exception;
+use Models\Movie as Movie;
+use Models\Genre as Genre;
 
-    /*Alias - DAO*/
-    use DAO\UserDAO as UserDAO;
-
-    /*Alias - Controllers*/
-    use Controllers\HomeController as HomeController;
-
-    /*Alias - Exceptions*/
-    use \PDOException as PDOException;
-
-    class UserController
-    {
-        private $userDAO;
-        private $homeController;
-
-        public function __construct()
-        {
-            $this->userDAO = new UserDAO();
-            $this->homeController = new HomeController();
-        }
-
-        public function Index(){
-            require_once(VIEWS_PATH."login.php");
-        }
-
-        public function Login($email = null, $password = null)
-        {
-            $perfilUser = $this->userDAO->GetByEmail($email);
-
-            if(($perfilUser != null) && ($perfilUser->getUser()->getPassword() === $password))
-            {
-                if($perfilUser->getUser()->getRol()->getDescription() === "admin"){
-                    $_SESSION["loggedUser"] = $perfilUser;
-                    $this->homeController->CinemasView();
-                }
-                else if($perfilUser->getUser()->getRol()->getDescription() === "client"){
-                    $_SESSION["loggedUser"] = $perfilUser;
-                    $this->homeController->ShowsViewClient();
-                }
-            }
-            else{
-                $this->homeController->Index("Usuario y/o Contraseña incorrectos");
-            }
-        }
-
-        public function Profile(){
-            $this->homeController->Profile();
-        }
-
-        public function checkSession()
-        {
-            if (session_status() == PHP_SESSION_NONE)
-                session_start();
-
-            if(isset($_SESSION['loggedUser'])) {
-
-                $perfilUser = $this->userDAO->getByEmail($_SESSION['loggedUser']->getUser()->getEmail());
-                if($perfilUser->getUser()->getPassword() == $_SESSION['loggedUser']->getUser()->getPassword())
-                    return $perfilUser;
-  
-            }else {
-                return false;
-            }
-        }
+class MovieDAO {
+    
+    private $moviesList = array();
+    private $genresList = array();
+    
+    //Trae todas las peliculas
+    public function getMovies(){
         
-        public function Logout()
-        {
-            if(session_status() == PHP_SESSION_NONE)
-                session_start();
-                session_destroy();
-            $this->homeController->Index();
-        }
+        $this->retrieveMovies();
 
-        public function Add($firstName, $lastName, $dni, $email, $password)
-        {
-            $perfilUser = new PerfilUser();
-            $user = new User();
-            $rol = new Rol();
-            
-            $rol->setDescription('client');
-
-            $user->setEmail($email);
-            $user->setPassword($password);
-            $user->setRol($rol);
-
-            $perfilUser->setFirstName($firstName);
-            $perfilUser->setLastName($lastName);
-            $perfilUser->setDni($dni);
-            $perfilUser->setUser($user);
-
-            $this->userDAO->Add($perfilUser);
-
-            $this->homeController->ShowsViewClient();
-        }
-
-
-        /*User is saved in session*/
-	    public function setSession($user) {
-            if (session_status() == PHP_SESSION_NONE)
-                session_start();
-		
-	        $_SESSION['user'] = $user;
-	
-        }
-        
-        public function UserExist($email){
-            try{
-                if($this->userDAO->GetByEmail($email)){
-                    return true;
-                }else
-                {
-                    return false;
-                }
-            }catch(\PDOException $ex){
-                throw $ex;
-            }
-        }
-
-        /*Methods for Facebook API*/
-
-      
-    public function loginWithFacebook($fbUserData) {
-        
-        try{
-            if($this->UserExist($fbUserData['email']))//comprueba que exista el usuario
-            {
-                $user = $this->userDAO->GetByEmail($fbUserData['email']);
-                
-                if($user)
-                {
-                    
-                    $_SESSION["loggedUser"] = $user;
-                    $this->homeController->ShowsViewClient();
-                }else{
-                    $errorMje = "Error: we Can´t access to your facebook acount";
-                    $this->homeController->Index();
-                }
-            }else{
-                $errorMje = "Error: there are no records of such user in the database";
-                $this->homeController->Index();
-            }
-        }catch(\PDOException $ex){
-            throw $ex;
-        }
+        return $this->moviesList;
+    }
+    
+    //Trae todos los generos de las peliculas
+    public function getGenres(){
+        $this->retrieveGenres();
+        return $this->genresList;
     }
 
-        private function verifyIfTheUserEmailBeUsing($accountsList, $userEmail) {
-            $result=false;
-
-            foreach($accountsList as $value)
-            {
-                if($value->getEmail()==$userEmail)
-                {
-                    $result=true;
-                    break;
-                }       
-            }
-            return $result;
-        }
-
-        private function createUserUsingFacebook($array) {
-            $email = $array["email"];
-            try
-            {
-                $idUserFacebook=$array["id"];
-                $firstName = $array["firstName"];
-                $lastName = $array["lastName"];
-                $email = $array["email"];
-
-                
-                //Password hash
-                $options = [
-                    'cost' => 12,
-                ];
-                $unencryptedPassword = $array["password"];;
-                $password = password_hash($unencryptedPassword, PASSWORD_BCRYPT, $options);
-                //
-
-                $userRoleDAO = new UserDAO();
-                $userRoleList = $userRoleDAO->GetAll($email);
-                if(!empty($userRoleList)) {
-                    foreach($userRoleList as $userRole) {
-                        if($userRole->getDescription() == "user") {
-                            $userRole = $userRole;
-                            break;
-                        }
-                    }
-                    $user = new User();
-                    $user->setEmail($email);
-                    $user->setPassword($password);
-                    $user->setRol($userRole);
-                    $this->userDAO->Add($userRole);
-
-                    $this->login($email, $unencryptedPassword);
-                    //A login is made to, with the email and password, load the user from the database and bring the ID
+    //Obtiene las peliculas a partir del "id" de un genero de la pelicula
+    public function getMoviesByGenre($id_genre){
+        $this->retrieveMovies();
+        $newMoviesList = [];
+        foreach ($this->moviesList as $movie){
+            foreach($movie->getGenres() as $genre){
+                if($id_genre == $genre){
+                    array_push($newMoviesList, $movie);
                 }
-                else {
-                    $message = "There was a problem creating the user. Try again";
-                    $this->homeController->Login($message);
-                } 
             }
-            catch(PDOException $e)
-            {
-                $message = "A database error ocurred";
-                $this->homeController->Login($message);
-            }            
         }
+        $returnedValue = count($newMoviesList) ? $newMoviesList : $this->moviesList;
+        return $returnedValue;
+    }
 
+    //Obtiene la duracion de una pelicula a travez de la API
+    public function retrieveDurationOneMovieFromApi($id) {
+        $json = file_get_contents("https://api.themoviedb.org/3/movie/" . $id . "?api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
+        $APIDataArray = json_decode($json, true);
+        $runtime = $APIDataArray["runtime"];
+        if($runtime == null) {
+            $runtime = 120;
+        }
+        return $runtime;
+    }
+
+    //Obtiene las peliculas a traves de la API
+    private function retrieveMovies(){
+
+        $json = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?page=1&language=en&api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
+        
+        $arrayToDecode = ($json) ? json_decode($json, true) : array();
+        $arrayMovies = $arrayToDecode["results"];
+
+        foreach($arrayMovies as $valuesArray)
+        {
+            $duration = $this->retrieveDurationOneMovieFromApi($valuesArray['id']) ;
+            $movie = new Movie($valuesArray['id'], $valuesArray['title'], $valuesArray['poster_path'], $valuesArray["original_language"],$duration, $valuesArray['overview'], $valuesArray['vote_average'], $valuesArray["genre_ids"]);
+
+            array_push($this->moviesList, $movie);
+        }
         
     }
+
+    //Obtiene los generos de las peliculas a traves de la API
+    public function retrieveGenres(){
+                
+        $json = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=499b6c2316b484f72da9054c9957ca97");//Se obtiene el Json de la API
+        $arrayToDecode = ($json) ? json_decode($json, true) : array();
+        $arrayGeneros = array_shift($arrayToDecode);
+
+        foreach($arrayGeneros as $valuesArray)
+            {
+                $genre = new Genre();
+
+                $genre->setId($valuesArray["id"]);
+                $genre->setName($valuesArray["name"]);
+
+                array_push($this->genresList, $genre);
+            }
+    }
+
+    //Obtiene un genero a partir de una "id"
+    public function getGenreForId($id_buscado){
+        for($i=0; $i < count($this->genresList) ; $i++)
+        {
+            $id = $this->genresList[$i]->getId();
+            if($id == $id_buscado)
+            {
+                $generoARetornar = $this->genresList[$i];
+            }
+        }
+        return $generoARetornar;
+    }
+
+    private function remplaceIdGenre(){
+        foreach($this->moviesList as $movie){
+            $genres = array_values(array_filter($this->genresList, function ($genre) use ($movie) {
+                return array_reduce($movie->getGenreIds(), function ($equal, $id) use ($genre) {
+                    return $equal || $id === $genre->getId();
+                });
+            }, ARRAY_FILTER_USE_BOTH));
+            $movie-> setGenreIds($genres);
+        }
+    }
+    
+}
 ?>
