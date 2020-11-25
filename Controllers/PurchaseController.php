@@ -31,13 +31,12 @@ class PurchaseController
 
         // Función de compra entrada, genera el ticket con los datos y el precio (pueden ser uno o más tickets).
         public function Add($count_tickets, $id_user, $id_show){
-           
             try{
                 $userController = new UserController();
                 $user = $userController->checkSession();
 
                 if($user){
-                    if($this->ticketsavailable($count_tickets, $id_show)){
+                    if($this->ticketsavailable($count_tickets, $id_show) != null){
                         $purchase = new Purchase();
 
                         //Retorna la función de cine a través del ID.
@@ -56,6 +55,8 @@ class PurchaseController
 
                         $this->purchaseDAO->Add($purchase);
                         $this->homeController->PurchaseConfirm($purchase);
+                    }else{
+                        $this->homeController->Index();
                     }
                 }else{
                     require_once(VIEWS_PATH."login.php");

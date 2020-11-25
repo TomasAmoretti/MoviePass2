@@ -150,6 +150,8 @@
 
                 $showsList = $showController->GetTable();
 
+                $showsListTotal = $showController->GetAllTotal();
+
                 $purchasesList = $purchaseController->GetAll();
 
                 require_once(VIEWS_PATH."admin-table-info.php");

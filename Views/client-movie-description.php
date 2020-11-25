@@ -81,15 +81,31 @@
                                 <li>
                                     <span class="entity-list-title">Synopsis:</span><?php echo $movie->getOverview(); ?>
                                 </li>
+                                <?php 
+                                    foreach($roomsList as $room){
+                                        if($room["id_room"] == $show->getRoom()){
+                                            ?>
                                 <li>
-                                    <span class="entity-list-title">Room:</span><?php echo $show->getRoom(); ?>
+                                    <span class="entity-list-title">Cinema:</span><?php echo $room["cinema_name"];?>
+                                            
                                 </li>
+                                <li>
+                                    <span class="entity-list-title">Room:</span><?php echo $room["room_name"];?>
+                                            
+                                </li>
+                                <?php   }
+                                    }   ?>
                                 <li>
                                     <span class="entity-list-title">Tickets available:</span><?php
                                     foreach($purchasesList as $purchase){ 
                                             if($show->getId() == $purchase["id_show"]){ 
                                                 $cont = 1;
-                                                echo $remainder = $purchase["capacity"] - $purchase["count_tickets"];
+                                                $remainder = $purchase["capacity"] - $purchase["count_tickets"];
+                                                if($remainder<= 0){
+                                                    echo 0;
+                                                }else{
+                                                    echo $remainder;
+                                                }
                                             }
                                     }if($cont == 0){
                                         foreach($roomsList as $room){
@@ -115,7 +131,7 @@
 
                                         <div class="form-group">
                                             <label>Cantidad de Entradas</label>
-                                            <input  type="number" min="1" class="form-control col-sm-5" name="count_tickets" required/>
+                                            <input  type="number" min="1" max="<?php echo $remainder?>" class="form-control col-sm-5" name="count_tickets" required/>
                                         </div>
 
                                         <input type="hidden" name="id_user" value="<?php echo $user->getId(); ?>"/>
@@ -128,7 +144,7 @@
                                 </li>
                                 <?php }else{ ?>
                                     <div class="form-group">
-                                            <label style="color:red;">El cine se quedo sin entradas para la funcion</label>
+                                            <label style="color:red;">No quedan entradas disponibles para la funcion</label>
                                     </div>
                                 <?php } ?>
 
