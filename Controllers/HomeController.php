@@ -279,9 +279,7 @@
             $userController = new UserController();
 
             $user = $userController->checkSession();
-            echo'toy aca';
             if($user){
-                echo'entre';
                 require_once(VIEWS_PATH."purchase-add.php");
             }else{
                 require_once(VIEWS_PATH."home.php");

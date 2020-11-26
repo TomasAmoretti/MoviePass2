@@ -79,7 +79,6 @@ class PurchaseController
                     $this->purchaseDAO->AddTicket($id_purchase, $id_show, $qr);
                     $purchase2 = $this->purchaseDAO->GetPurchaseById($id_purchase);
                     $this->purchaseDAO->SendEmail($purchase2, $qr);
-                    echo 'aca toy';
                     $this->homeController->PurchaseAdd();
                 }else{
                     require_once(VIEWS_PATH."login.php");
