@@ -36,7 +36,7 @@ class PurchaseController
                 $user = $userController->checkSession();
 
                 if($user){
-                    if($this->ticketsavailable($count_tickets, $id_show) != null){
+                    if($this->ticketsAvaliable($count_tickets, $id_show) != null){
                         $purchase = new Purchase();
 
                         //Retorna la función de cine a través del ID.
@@ -79,6 +79,7 @@ class PurchaseController
                     $this->purchaseDAO->AddTicket($id_purchase, $id_show, $qr);
                     $purchase2 = $this->purchaseDAO->GetPurchaseById($id_purchase);
                     $this->purchaseDAO->SendEmail($purchase2, $qr);
+                    echo 'aca toy';
                     $this->homeController->PurchaseAdd();
                 }else{
                     require_once(VIEWS_PATH."login.php");
@@ -143,7 +144,7 @@ class PurchaseController
             }
         }
         
-        private function ticketsavailable($count_tickets, $id_show){
+        private function ticketsavailable2($count_tickets, $id_show){
 
             $purchseList = $this->purchaseDAO->GetAll();
             $showList = $this->showDAO->GetTable();
@@ -159,6 +160,38 @@ class PurchaseController
                             throw new PDOException("La cantidad de tickets es superior a la cantidad disponible");
                         }
                     }
+            }
+        }
+
+        private function ticketsAvaliable($count_tickets, $id_show){
+            $cont = 0;
+            $roomList = $this->roomDAO->GetAll();
+            $showList = $this->showDAO->GetTable();
+            $purchseList = $this->purchaseDAO->GetAll();
+            foreach($roomList as $room){
+                foreach($showList as $show){
+                    if($show['id_show'] == $id_show){
+                        if($room['id_room'] == $show['id_room']){
+                            if($room['capacity'] >= $count_tickets){
+                                foreach($purchseList as $purchase){
+                                    if($purchase['id_show'] == $id_show){
+                                        $cont = 1;                                    
+                                            $remainder = $purchase["capacity"] - $purchase["count_tickets"];
+                                            if($remainder >=1)
+                                                return true;
+                                    }
+                                }
+                                if($cont == 0){
+                                    $remainder = $room['capacity'];
+                                    if($remainder >=1)
+                                                return true;
+                                }
+                            }else{
+                                throw new PDOException("La cantidad de tickets es superior a la cantidad disponible");
+                            }
+                        }
+                    }
+                }
             }
         }
     }   
