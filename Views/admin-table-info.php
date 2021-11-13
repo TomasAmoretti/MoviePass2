@@ -15,7 +15,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary"> Info </h6>
+        <h6 class="m-0 font-weight-bold text-primary"> Purchase Info </h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -30,8 +30,7 @@
                     <th>Room</th>
                     <th>Date</th>
                     <th>Hour</th>
-                    <th>Date Purchase</th>
-
+                    <th>Last Date Purchase</th>
                     <th>Quantity Sold</th>
                     <th>Remainder</th>
                     <th> Sold ($) </th>
@@ -41,11 +40,10 @@
 
             <tbody>
             <?php   foreach($purchasesList as $purchase){ 
-                        foreach($showsList as $shows){ 
-                            if($shows["id_show"] == $purchase["id_show"]){
+                        foreach($showsListTotal as $shows){
+                            if($shows->getId() == $purchase["id_show"]){
                                 foreach($moviesList as $movie){ 
-                                    if($shows["id_movie"] == $movie->getId()){
-                        
+                                    if($shows->getIdMovie() == $movie->getId()){
                        ?>   
                         
                     <tr id="row">
@@ -58,7 +56,12 @@
                     <td><?php echo $purchase["date_purchase"]; ?></td>
 
                     <td><?php echo $purchase["count_tickets"]; ?></td>
-                    <td><?php echo $remainder = $purchase["capacity"] - $purchase["count_tickets"]; ?></td>
+                    <td><?php $remainder = $purchase["capacity"] - $purchase["count_tickets"]; 
+                            if($remainder< 0){
+                                echo 0;
+                            }else{
+                                echo $remainder;
+                            }?></td>
                     <td><?php echo $purchase["total"]; ?></td>
                 </tr>  
             <?php 

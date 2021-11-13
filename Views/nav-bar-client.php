@@ -22,7 +22,7 @@
                     <div class="nav-arrow"><i class="fas fa-chevron-down"></i></div>
                     <ul class="collapse nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Profile</a>
+                            <a class="nav-link" href="<?php echo FRONT_ROOT?>User/Profile">Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>

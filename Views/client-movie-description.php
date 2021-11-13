@@ -1,6 +1,7 @@
 <?php
   include_once('header.php'); 
   include_once('nav-bar-client.php'); 
+  $cont = 0;
   
 ?>
   <!-- Page Content -->
@@ -81,10 +82,43 @@
                                 <li>
                                     <span class="entity-list-title">Synopsis:</span><?php echo $movie->getOverview(); ?>
                                 </li>
+                                <?php 
+                                    foreach($roomsList as $room){
+                                        if($room["id_room"] == $show->getRoom()){
+                                            ?>
                                 <li>
-                                    <span class="entity-list-title">Room:</span><?php echo $show->getRoom(); ?>
+                                    <span class="entity-list-title">Cinema:</span><?php echo $room["cinema_name"];?>
+                                            
                                 </li>
-
+                                <li>
+                                    <span class="entity-list-title">Room:</span><?php echo $room["room_name"];?>
+                                            
+                                </li>
+                                <?php   }
+                                    }   ?>
+                                <li>
+                                    <span class="entity-list-title">Tickets available:</span><?php
+                                    $remainder = 0;
+                                    foreach($purchasesList as $purchase){ 
+                                            if($show->getId() == $purchase["id_show"]){ 
+                                                $cont = 1;
+                                                $remainder = $purchase["capacity"] - $purchase["count_tickets"];
+                                                if($remainder<= 0){
+                                                    echo 0;
+                                                }else{
+                                                    echo $remainder;
+                                                }
+                                            }
+                                    }if($cont == 0){
+                                        foreach($roomsList as $room){
+                                            if($room["id_room"] == $show->getRoom()){
+                                                $remainder = $room['capacity'];
+                                                echo $remainder;
+                                            }
+                                        }
+                                    }                                    
+                                    ?>
+                                </li>
                                 <li>
                                     <span class="entity-list-title">Price:</span><?php 
                                         foreach($roomsList as $room){
@@ -94,13 +128,13 @@
                                         }
                                         ?>
                                 </li>
-
-                                <li>
+                                <?php if($remainder > 0){ ?>
+                                <li> 
                                     <form  action="<?php echo FRONT_ROOT ?>Purchase/Add" method="POST">
 
                                         <div class="form-group">
                                             <label>Cantidad de Entradas</label>
-                                            <input  type="number" min="1" class="form-control col-sm-5" name="count_tickets" required/>
+                                            <input  type="number" min="1" max="<?php echo $remainder?>" class="form-control col-sm-5" name="count_tickets" required/>
                                         </div>
 
                                         <input type="hidden" name="id_user" value="<?php echo $user->getId(); ?>"/>
@@ -111,6 +145,11 @@
                                     
                                     </form>
                                 </li>
+                                <?php }else{ ?>
+                                    <div class="form-group">
+                                            <label style="color:red;">No quedan entradas disponibles para la funcion</label>
+                                    </div>
+                                <?php } ?>
 
                             </ul>
                         </div>

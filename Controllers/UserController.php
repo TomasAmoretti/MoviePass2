@@ -51,6 +51,10 @@
             }
         }
 
+        public function Profile(){
+            $this->homeController->Profile();
+        }
+
         public function checkSession()
         {
             if (session_status() == PHP_SESSION_NONE)

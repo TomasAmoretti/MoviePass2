@@ -58,6 +58,28 @@ class ShowController
         }
     }
 
+    public function GetAllTotal($validMessage = null)
+    {
+
+        try {
+
+            $showsList = $this->showDAO->GetAll();
+            $validShows = array();
+            foreach($showsList as $show){
+                array_push($validShows, $show);
+            }
+            $this->validateHourAndDayShow2($validShows);
+            $message = $validMessage;
+
+            return  $validShows;
+        } catch (\PDOException $e) {
+
+            $message = $e->getMessage();
+            $this->homeController->ShowsViewAdmin($message);
+            return null;
+        }
+    }
+
     public function GetById($id_show, $validMessage = null)
     {
 

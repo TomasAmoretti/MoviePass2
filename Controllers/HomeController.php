@@ -45,6 +45,29 @@
             require_once(VIEWS_PATH."home-register.php");
         }
 
+        public function Profile(){
+
+            $userController = new UserController();
+            $movieController = new MovieController();
+            $roomController = new RoomController();
+            $showController = new ShowController();
+            $purchaseController = new PurchaseController();
+
+            $user = $userController->checkSession();
+            
+            if($user){
+                $moviesList = $movieController->GetMovies();
+                $genresList = $movieController->GetGenres();
+                $roomsList = $roomController->GetAll();
+                $showsList = $showController->GetAll();  
+                $purchaseList = $purchaseController->GetAll();
+                require_once(VIEWS_PATH."client-profile.php");
+
+            }else{
+                $userController->Logout();
+            }
+        }
+
         //Valida la sesión y muestra una lista de cines al Admin.
         public function CinemasView( $validMessage = null ){
 
@@ -127,6 +150,8 @@
 
                 $showsList = $showController->GetTable();
 
+                $showsListTotal = $showController->GetAllTotal();
+
                 $purchasesList = $purchaseController->GetAll();
 
                 require_once(VIEWS_PATH."admin-table-info.php");
@@ -165,6 +190,7 @@
             $movieController = new MovieController();
             $roomController = new RoomController();
             $showController = new ShowController();
+            $purchaseController = new PurchaseController();
 
             $user = $userController->checkSession();
 
@@ -172,6 +198,7 @@
             $genresList = $movieController->GetGenres();
             $roomsList = $roomController->GetAll();
             $show = $showController->GetById($id_show);
+            $purchasesList = $purchaseController->GetAll();
             if($user){
                 require_once(VIEWS_PATH."client-movie-description.php");
             }else{
@@ -252,7 +279,6 @@
             $userController = new UserController();
 
             $user = $userController->checkSession();
-            
             if($user){
                 require_once(VIEWS_PATH."purchase-add.php");
             }else{
