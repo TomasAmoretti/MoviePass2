@@ -10,8 +10,8 @@
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800"> <?php echo "       $validMessage"; ?> </h1>
+    <!-- Page Heading 
+    <h1 class="h3 mb-2 text-gray-800">  //echo "       $validMessage";  </h1>-->
     
     <!-- DataTales Example -->
     <div class="card shadow mb-4">

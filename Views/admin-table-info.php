@@ -60,9 +60,6 @@
                     <td><?php echo $purchase["count_tickets"]; ?></td>
                     <td><?php echo $remainder = $purchase["capacity"] - $purchase["count_tickets"]; ?></td>
                     <td><?php echo $purchase["total"]; ?></td>
-
- 
-
                 </tr>  
             <?php 
                                     }
